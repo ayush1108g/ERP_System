@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import "./HomePage.css";
 import { PieChart } from "react-minimal-pie-chart";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import axios from "axios";
+
 import LoginContext from "../../store/context/loginContext";
 import Modal from "../../component/Modal";
 import Navbar from "../../component/Navbar/Navbar";
@@ -12,10 +13,10 @@ import { backendUrl } from "../../constant";
 import { useAlert } from "../../store/context/Alert-context";
 import classes from './AdminDashboard.module.css';
 import { useSidebar } from "../../store/context/sidebarcontext";
-
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 function HomePage() {
+  const location = useLocation();
   const navigate = useNavigate();
   const [cookies] = useCookies(["AccessToken", "RefreshToken"]);
   const alertCtx = useAlert();
@@ -36,10 +37,10 @@ function HomePage() {
 
   // redirect to admin page if role is admin
   useEffect(() => {
-    if (LoginCtx.role === 'admin') {
+    if (LoginCtx.role === 'admin' && location.pathname !== '/admin') {
       navigate('/admin');
     }
-  }, [LoginCtx, navigate]);
+  }, [LoginCtx.role, location.pathname, navigate,]);
 
 
   // get courses and timetable
@@ -76,6 +77,7 @@ function HomePage() {
       }));
 
       data = Array.from(new Set(data));
+
       setCourses(data);
       let todayTimetable = data.map((course) => {
         let schedule = course?.schedule;
@@ -107,7 +109,7 @@ function HomePage() {
     };
 
     asyncFunc1();
-  }, [LoginCtx]);
+  }, [LoginCtx.isLoggedIn]);
 
   // get announcements
   useEffect(() => {
@@ -126,7 +128,7 @@ function HomePage() {
       }
     };
     asyncFunc();
-  }, []);
+  }, [LoginCtx.isLoggedIn]);
 
   // get attendance
   useEffect(() => {
@@ -152,7 +154,7 @@ function HomePage() {
       }
     };
     asyncFunc();
-  }, [LoginCtx.user]);
+  }, [LoginCtx.isLoggedIn]);
 
   // navigate to attendance according to role
   const handleAttendance = () => {
@@ -254,10 +256,10 @@ function HomePage() {
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }} >
                           <div style={{ maxWidth: "150px", maxHeight: "200px" }}
                           >
-                            <PieChart startAngle={-90} lengthAngle={-360} lineWidth={50} labelPosition={50}
-                              label={({ dataEntry }) => { if (dataEntry.value === 0) { return null; } return `${dataEntry.title}: ${dataEntry.value}`; }}
+                            {<PieChart startAngle={-90} lengthAngle={-360} lineWidth={50} labelPosition={50}
+                              label={({ dataEntry }) => { if (dataEntry.value === 0 || isNaN(dataEntry)) { return null; } return `${dataEntry.title}: ${dataEntry.value}`; }}
                               labelStyle={{ fontSize: "8px", fontFamily: "sans-serif", fill: "#121212", }}
-                              data={[{ title: "Present", value: Attendance.present, color: "#D2DAFF", }, { title: "Absent", value: Attendance.absent, color: "#B1B2FF", },]} />
+                              data={[{ title: "Present", value: Attendance.present, color: "#D2DAFF", }, { title: "Absent", value: Attendance.absent, color: "#B1B2FF", },]} />}
                           </div>
                         </div>
                         {LoginCtx?.role === "student" && <p>Total : {Attendance.total}</p>}

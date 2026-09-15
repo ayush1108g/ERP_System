@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-import classes from "./AdminDashboard.module.css"
+import classes from "./AdminDashboard.module.css";
+
 import Navbar from "../../component/Navbar/Navbar"
 import Modal from "../../component/Modal";
 import { useNavigate } from "react-router-dom";
-import { useAlert } from "../../store/context/Alert-context";
-import axios from "axios";
-import { backendUrl } from "../../constant";
-import LoginContext from "../../store/context/loginContext";
 import { useCookies } from "react-cookie";
 import { PieChart } from 'react-minimal-pie-chart';
-
 import { MdArrowBackIosNew } from "react-icons/md";
 import { MdArrowForwardIos } from "react-icons/md";
+import axios from "axios";
 
+import { useAlert } from "../../store/context/Alert-context";
+import { backendUrl } from "../../constant";
+import LoginContext from "../../store/context/loginContext";
 import { useSidebar } from "../../store/context/sidebarcontext";
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -37,7 +37,7 @@ const AdminDashBoard = () => {
 
 
     useEffect(() => {
-        if (LoginCtx.role !== 'admin') {
+        if (!LoginCtx.isLoginDataFetching && LoginCtx.role !== 'admin') {
             navigate('/');
         }
     }, [LoginCtx, navigate]);
@@ -283,7 +283,7 @@ const AdminDashBoard = () => {
                                 <h3>Stats</h3>
                                 <div style={{ maxWidth: "150px", maxHeight: "200px", }}                                >
                                     <PieChart startAngle={-90} lengthAngle={-360} lineWidth={50} labelPosition={50}
-                                        label={({ dataEntry }) => { if (dataEntry?.value === 0) { return null; } return `${dataEntry?.title}: ${dataEntry?.value}`; }}
+                                        label={({ dataEntry }) => { if (dataEntry?.value === 0 || isNaN(dataEntry.value)) { return null; } return `${dataEntry?.title}: ${dataEntry?.value}`; }}
                                         labelStyle={{ fontSize: "8px", fontFamily: "sans-serif", fill: "#121212", }}
                                         data={[{ title: erpstats[0]?._id, value: erpstats[0]?.numUsers, color: "#E1AFD1", },
                                         { title: erpstats[1]?._id, value: erpstats[1]?.numUsers, color: "#AD88C6", },

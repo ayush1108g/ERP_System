@@ -84,6 +84,7 @@ const ModalA = (props) => {
                         >
                             <option selected value={null}>Select Course </option>
                             {courses.map((course) => {
+                                if (!course) return null;
                                 return (
                                     <option value={course._id}>{course.name}</option>
                                 )

@@ -14,10 +14,7 @@
 .h2 {
   background: transparent;
 }
-.body{
-  background: radial-gradient(circle at 10% 20%, rgb(186, 190, 245) 0%, rgb(192, 192, 245) 33.1%, rgb(218, 203, 246) 90%);
-    
-}
+
 .circularBox {
   width: 12vw;
   height: 12vw;
@@ -33,7 +30,8 @@
   margin: 4vw;
   display: flex;
   flex-direction: row;
-  gap: 20vw;
+  justify-content: center;
+  gap: 50px;
 }
 
 .parent1 {
@@ -46,7 +44,7 @@
   align-items: center;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.35);
   height: 65vh;
-  margin-left: 5vw;
+  /* margin-left: 5vw; */
 }
 
 .parent1 div {
@@ -72,7 +70,7 @@
 }
 @media screen and (min-width: 1000px) {
   .body {
-    width: 100vw;
+    /* width: 100vw; */
     height: 120vh;
   }
 }
@@ -105,7 +103,7 @@
   }
   @media screen and (min-width: 1000px) {
     .body {
-      width: 100vw;
+      /* width: 100vw; */
       height: 100vh;
     }
   }

@@ -18,9 +18,25 @@ const Login = () => {
   const [message, setMessage] = useState("   ");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedDummy, setSelectedDummy] = useState(null);
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+
+  const dummytext = ["admin", "faculty", "student"];
+  const listemails = ["22mp01099@iitbbs.ac.in", "22mq01099@iitbbs.ac.in", "22mr01099@iitbbs.ac.in"];
+  const listpasswords = ["12345678", "12345678", "12345678"];
+
+  // handle selection of dummy data
+  const handleSelectDummy = (index) => {
+    emailInputRef.current.value = listemails[index];
+    passwordInputRef.current.value = listpasswords[index];
+    setSelectedDummy(index);
+
+    setTimeout(() => {
+      LoginHandler({ preventDefault: () => { } });
+    }, 100);
+  };
 
   //toggle password visibility
   const handleTogglePassword = (e) => {
@@ -52,6 +68,7 @@ const Login = () => {
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
+    alertCtx.showAlert('danger', 'Server is Gearing Up. Please Wait...');
     //check if email and password are entered
     if (enteredEmail.trim().length === 0 || enteredPassword.trim().length === 0)
       return setMessage("Please enter all the fields");
@@ -72,9 +89,9 @@ const Login = () => {
         loginCtx.login(resp.data.AccessToken, resp.data.RefreshToken, resp.data.data.user); // login function from loginContext.js
         setMessage("Success");
         alertCtx.showAlert("success", "Logged In Successfully");
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
+        // setTimeout(() => {
+        // navigate("/");
+        // }, 2000);
       }
     } catch (error) {
       console.log(error);
@@ -83,13 +100,14 @@ const Login = () => {
       else if (error.code === "ERR_BAD_RESPONSE")
         setMessage("Server Not Responding...");
       else setMessage("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
 
   return (
-    <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
       <div className={`row d-flex align-items-center ${classes.container}`}>
         <motion.form key={loginCtx.isLoggedIn} className={`border-bottom-0 ${classes.form}`}>
 
@@ -129,12 +147,27 @@ const Login = () => {
               {"Don't have an account? Sign Up"}
             </button>
             <motion.button initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className={"small d-flex justify-content-end font-monospace row text-dark " + classes.signin}
-              style={{ fontSize: "2vh", backgroundColor: 'transparent', border: 'none', fontWeight: 'bold' }} onClick={forgotPasswordHandler}>
+              style={{ fontSize: "2vh", backgroundColor: 'transparent', border: 'none', fontWeight: 'bold' }} disabled={isLoading} onClick={forgotPasswordHandler}>
               Forgot Password?
             </motion.button>
           </div>
         </motion.form>
       </div >
+
+      {/* Dummy Data Selection - Top Right Corner */}
+      <div style={{ position: 'absolute', top: '20px', right: '20px', backgroundColor: '#fff1', minWidth: "200px", padding: '10px', borderRadius: '12px', zIndex: 990, boxShadow: '0 0 10px rgba(0, 0, 0.3, 0.3)' }}>
+        <p>Select Dummy Data to Login:</p>
+        {dummytext.map((text, index) => (
+          <div key={index} style={{ marginBottom: '10px', cursor: 'pointer' }} onClick={() => handleSelectDummy(index)}>
+            <hr />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <img src={`https://via.placeholder.com/40?text=${text.charAt(0).toUpperCase()}`} alt={text} style={{ borderRadius: '50%', marginRight: '10px' }} />
+              <span>{text.toLocaleUpperCase()}</span>
+            </div>
+          </div>
+        ))}
+        <hr />
+      </div>
     </div >
   );
 };

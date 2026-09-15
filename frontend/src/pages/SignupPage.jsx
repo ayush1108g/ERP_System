@@ -93,7 +93,7 @@ const SignupPage = () => {
                 setCookie("RefreshToken", res.data.RefreshToken, { path: "/", maxAge: 60 * 60 * 24 * 1 * 0.6 }); // 0.6 day = 14.4 hours
 
                 Loginctx.login(res.data.AccessToken, res.data.RefreshToken, res.data.data.user);
-                navigate("/");
+                // navigate("/");
             } else {
                 Alertctx.showAlert("success", "Signup successful please login to continue");
             }
@@ -212,7 +212,7 @@ const SignupPage = () => {
 
                 <div className={`${classes.gridItem} input-group mb-3`}>
                     <span class="input-group-text" id="5">DOB</span>
-                    <input ref={datepickerRef} type="text" class="form-control shadow-none "
+                    <input ref={datepickerRef} type="date" class="form-control shadow-none "
                         placeholder="DD-MM-YYYY"
                         aria-label="01-01-2000" aria-describedby="5" />
                 </div>

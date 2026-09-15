@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 const LoginContext = React.createContext({
+  isLoginDataFetching: true,
   AccessToken: null,
   RefreshToken: null,
   loading: false,
@@ -17,11 +18,13 @@ const LoginContext = React.createContext({
   setAccessToken: () => {},
   setRefreshToken: () => {},
   setLoading: () => {},
+  setIsLoginDataFetching: () => {},
 });
 
 const LoginContextProvider = (props) => {
   const [cookie, setCookie] = useCookies(["AccessToken", "RefreshToken"]);
 
+  const [isLoginDataFetching, setIsLoginDataFetching] = useState(true);
   const [loading, setLoading] = useState(false);
   const [AccessToken, setAccessToken] = useState(null);
   const [RefreshToken, setRefreshToken] = useState(null);
@@ -32,10 +35,11 @@ const LoginContextProvider = (props) => {
 
   // function to handle login
   const loginHandler = (AccessToken, RefreshToken, user) => {
-    setAccessToken(AccessToken);
-    setRefreshToken(RefreshToken);
+    updateAccessToken(AccessToken);
+    updateRefreshToken(RefreshToken);
     setIsLoggedIn(true);
     setUser(user);
+    setIsLoginDataFetching(false);
   };
 
   // check if user is logged in
@@ -62,6 +66,7 @@ const LoginContextProvider = (props) => {
   // function to update access token
   const updateAccessToken = (newAccessToken) => {
     console.log(newAccessToken);
+    setAccessToken(newAccessToken);
     setCookie("AccessToken", newAccessToken, {
       path: "/",
       maxAge: 60 * 60 * 24 * 1 * 0.2, // 0.2 days = 4.8 hours
@@ -70,6 +75,7 @@ const LoginContextProvider = (props) => {
   };
   const updateRefreshToken = (newRefreshToken) => {
     console.log(newRefreshToken);
+    setRefreshToken(newRefreshToken);
     setCookie("RefreshToken", newRefreshToken, {
       path: "/",
       maxAge: 60 * 60 * 24 * 1 * 0.6, // 0.6 days = 14.4 hours
@@ -80,6 +86,8 @@ const LoginContextProvider = (props) => {
   const context = {
     name: name,
     isLoggedIn: isLoggedIn,
+    isLoginDataFetching: isLoginDataFetching,
+    setIsLoginDataFetching: setIsLoginDataFetching,
     loading: loading,
     AccessToken: AccessToken,
     RefreshToken: RefreshToken,

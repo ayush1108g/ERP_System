@@ -43,7 +43,7 @@ const RoutesWithAnimation = () => {
     const navigate = useNavigate();
     const authCtx = useContext(LoginContext);
     const [cookie] = useCookies(["AccessToken", "RefreshToken"]);
-
+    console.log(authCtx);
     // Verify the token and set the user data in the context
     useEffect(() => {
         const asyncFunc = async (AccessToken) => {
@@ -57,6 +57,7 @@ const RoutesWithAnimation = () => {
                     authCtx.setIsLoggedIn(true);
                     authCtx.setName(response?.name);
                     authCtx.setLoading(false);
+                    authCtx.setIsLoginDataFetching(false);
                 }
             } catch (err) {
                 if (
@@ -71,21 +72,21 @@ const RoutesWithAnimation = () => {
         };
         console.log(cookie.AccessToken);
         asyncFunc(cookie.AccessToken);
-    }, []);
+    }, [authCtx, cookie.AccessToken, cookie.RefreshToken]);
 
     // Redirect to login page if not logged in
     useEffect(() => {
-        setTimeout(() => {
-            if (authCtx.isLoggedIn === false) {
-                navigate("/login");
-            }
-        }, 1000);
-    }, [authCtx.isLoggedIn]);
+        // setTimeout(() => {
+        if (!authCtx.isLoginDataFetching && authCtx.isLoggedIn === false && location.pathname !== "/login") {
+            navigate("/login");
+        }
+        // }, 1000);
+    }, [authCtx.isLoggedIn, authCtx.isLoginDataFetching, location.pathname, navigate]);
 
     // Update the user data in the context
     useEffect(() => {
         const asyncFunc0 = async () => {
-            if (!authCtx.user) {
+            if (!authCtx.isLoginDataFetching && !authCtx.user) {
                 try {
                     const resp = await axios.get(`${backendUrl}/api/v1/users/update`, { headers: { Authorization: `Bearer ${cookie.AccessToken}` }, });
                     console.log(resp.data.data);

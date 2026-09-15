@@ -44,7 +44,7 @@ function Navbar(props) {
           <img src={iitbbslogo} alt="" />
           <h3>IIT BBS</h3>
         </div>
-        {LoginCtx.isLoggedIn && <div
+        {<div
           className="navbar-item"
           onClick={() => { LoginCtx.logout(); navigate("/login") }}
         >

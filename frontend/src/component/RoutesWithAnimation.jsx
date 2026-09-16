@@ -43,6 +43,9 @@ const RoutesWithAnimation = () => {
     const navigate = useNavigate();
     const authCtx = useContext(LoginContext);
     const [cookie] = useCookies(["AccessToken", "RefreshToken"]);
+    const isPublicRoute = location.pathname === "/login"
+        || location.pathname === "/signup"
+        || location.pathname.startsWith("/login/forgotpassword");
     // Verify the token and set the user data in the context
     useEffect(() => {
         const asyncFunc = async (AccessToken) => {
@@ -80,11 +83,11 @@ const RoutesWithAnimation = () => {
     // Redirect to login page if not logged in
     useEffect(() => {
         // setTimeout(() => {
-        if (!authCtx.isLoginDataFetching && authCtx.isLoggedIn === false && location.pathname !== "/login") {
+        if (!authCtx.isLoginDataFetching && authCtx.isLoggedIn === false && !isPublicRoute) {
             navigate("/login");
         }
         // }, 1000);
-    }, [authCtx.isLoggedIn, authCtx.isLoginDataFetching, location.pathname, navigate]);
+    }, [authCtx.isLoggedIn, authCtx.isLoginDataFetching, isPublicRoute, navigate]);
 
     // Update the user data in the context
     useEffect(() => {

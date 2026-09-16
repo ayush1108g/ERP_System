@@ -52,7 +52,7 @@ const Login = () => {
 
   //redirect to forgot password page
   const forgotPasswordHandler = () => {
-    navigate("forgotpassword");
+    navigate("/login/forgotpassword");
   };
 
 

@@ -1,104 +1,187 @@
-.Body{
-    display: flex;
+.Body {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 1vw;
+  margin-left: 35px;
+}
+.eqp {
+  padding: 0px;
+  margin: 0px;
+}
+.list {
+  justify-content: center;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 2px solid rgb(205, 204, 204);
+  margin: 20px;
+  margin-bottom: 0px;
+  border-radius: 10px;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+.listitem {
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+  width: 300px;
+  height: 250px;
+  border: 2px solid rgb(205, 204, 204);
+  background-color: white;
+  border-radius: 15px;
+  text-decoration: solid;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+  font-size: larger;
+  padding: 0px;
+  position: relative;
+}
+
+.eqp ul li:hover {
+  background-color: rgb(234, 208, 237);
+}
+
+.courceName {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+.profName {
+  font-size: medium;
+  margin-left: 20px;
+}
+
+.listfooter {
+  position: absolute;
+  bottom: 5px;
+  margin-top: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+.icons {
+  margin-left: 70%;
+  padding: 6px;
+  display: flex;
+  gap: 20px;
+}
+
+.details {
+  border-bottom: 2px solid rgb(205, 204, 204);
+  height: 80%;
+}
+
+.img {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 80%;
+  z-index: 1;
+}
+
+.btn {
+  border-radius: 8px;
+  margin-right: 100px !important;
+  background-color: rgb(29, 196, 3);
+  font-size: medium;
+  color: white;
+  border: none;
+  padding: 10px;
+}
+.registered {
+  background-color: #e9f7f2;
+  color: #14795f;
+  border: 1px solid #b7e5d6;
+  cursor: default;
+}
+
+.adminPanel,
+.requestNotice,
+.requests {
+  max-width: 1100px;
+  margin: 0 auto 20px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.adminPanel h2,
+.requests h2 {
+  margin: 0 0 6px;
+  color: var(--ink);
+  font-size: 1.1rem;
+}
+.adminPanel p,
+.requestNotice {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.adminControls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.adminControls select {
+  flex: 1 1 280px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+}
+.requestRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.requestRow div:first-child {
+  display: grid;
+  gap: 3px;
+}
+.requestRow span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.requestActions {
+  display: flex;
+  gap: 8px;
+}
+.requestActions .btn {
+  margin: 0 !important;
+}
+@media (max-width: 720px) {
+  .adminPanel,
+  .requestNotice,
+  .requests {
+    margin: 0 16px 16px;
+  }
+  .requestRow {
+    align-items: flex-start;
     flex-direction: column;
-   
+  }
+  .requestActions {
+    width: 100%;
+  }
+  .requestActions .btn {
+    flex: 1;
+  }
 }
-
-.title{
-  
-    margin: 1vw;
-    margin-left: 35px;
-
+.adminPanel {
+  margin-bottom: 8px;
 }
-.eqp{
-    padding: 0px;
-    margin: 0px;
+.eqp {
+  max-width: 1100px;
+  margin: 0 auto;
 }
-.list{
-   
-    justify-content: center;
-     list-style: none;
-     display: flex;
-     align-items: center;
-     flex-wrap:wrap;
-     border: 2px solid rgb(205, 204, 204);
-     margin: 20px;
-     margin-bottom: 0px;
-     border-radius: 10px;
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
-}
-
- .listitem{
-    display: flex;
-    flex-direction: column;
-    margin: 15px;
-    width: 300px;
-    height: 250px;
-    border: 2px solid rgb(205, 204, 204);
-    background-color: white ;
-    border-radius: 15px;
-    text-decoration: solid;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
-    font-size:larger;
-    padding: 0px;
-    position: relative;
- 
-}
-
-.eqp ul li:hover{
-     background-color: rgb(234, 208, 237);
-}
-
-.courceName{
-    margin-top: 10px;
-    margin-left:20px;
-}
-.profName{
-    font-size: medium;
-    margin-left:20px;
-}
-
-
-.listfooter{
-    position: absolute;
-    bottom: 5px;
-    margin-top: 0px;
-    padding: 0px;
-      width: 100%;
-      
-}
-
-.icons{
-   margin-left: 70%;
-    padding: 6px;
-    display: flex;
-    gap: 20px;
-    
-}
-
-.details{
-    border-bottom: 2px solid  rgb(205, 204, 204);
-          height: 80%;
-     
-}
-
-.img{
-   position: absolute;
-   top: 0px;
-   left: 0px;
-   height: 80%;
-   z-index: 1;
-}
-
-
-.btn{
-    border-radius: 8px;
-    margin-right: 100px !important;
-    background-color: rgb(29, 196, 3);
-    font-size: medium;
-    color: white;
-    border: none;
-    padding: 10px;
+.requests {
+  margin-top: 28px;
 }

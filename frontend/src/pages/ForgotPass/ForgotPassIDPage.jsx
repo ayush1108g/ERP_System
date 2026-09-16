@@ -58,7 +58,7 @@ const ForgotPassIDPage = () => {
     <>
       <div className={`row d-flex align-items-center ${classes.container}`}>
         {!isValid && <p className="h1 d-flex align-items-center justify-content-center">Not Authorised</p>}
-        {isValid === "1" && <motion.form className={`border-bottom-0 ${classes.form}`}>
+        {isValid === "1" && <motion.form className={`border-bottom-0 ${classes.form}`} onSubmit={proceedtoConfirmhandler}>
 
           <p className="h2">Forgot Password</p>
           <p>Password reset email sent to {emailid}</p>
@@ -77,7 +77,7 @@ const ForgotPassIDPage = () => {
           <div style={{ minHeight: '50px' }} />
 
           <div className={classes.buttons}>
-            <button className="btn btn-primary w-100" type="submit" onClick={proceedtoConfirmhandler} disabled={isLoading}
+            <button className="btn btn-primary w-100" type="submit" disabled={isLoading}
               style={{ height: isLoading ? "" : "50px" }}>
               {isLoading ? (<div className="spinner-border text-danger" role="status" />) : "Proceed"}
             </button>

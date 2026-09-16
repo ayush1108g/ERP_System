@@ -85,7 +85,7 @@ const ForgotPassConfirmPage = () => {
 
         <AnimatePresence>
           {isValid === "1" && (
-            <motion.form className={`border-bottom-0 ${classes.form}`}>
+            <motion.form className={`border-bottom-0 ${classes.form}`} onSubmit={proceedtoLogin}>
 
               <p className="h2" >Forgot Password</p>
               <p>Enter new Password for {emailid}</p>
@@ -116,7 +116,7 @@ const ForgotPassConfirmPage = () => {
               <div style={{ minHeight: '50px' }} />
 
               <div className={classes.buttons}>
-                <button className="btn btn-primary w-100" type="submit" onClick={proceedtoLogin} disabled={isLoading}
+                <button className="btn btn-primary w-100" type="submit" disabled={isLoading}
                   style={{ height: isLoading ? "" : "50px" }}>
                   {isLoading ? (<div className="spinner-border text-danger" role="status" />) : "Confirm Password"}
                 </button>

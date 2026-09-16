@@ -150,15 +150,15 @@ const SignupPage = () => {
 
         <div className={classes.container}>
             <h1 className={classes.h1}>Sign Up</h1>
-            <div class={classes.gridContainer}>
+            <div className={classes.gridContainer}>
 
                 <div className={`${classes.gridItem} input-group mb-3`}>
-                    <span class="input-group-text" id="10">Role</span>
-                    <select class="form-control shadow-none" aria-label="Large select example"
+                    <span className="input-group-text" id="10">Role</span>
+                    <select className="form-control shadow-none" aria-label="Large select example"
                         value={role}
                         onChange={(e) => setRole(e.target.value)}
                     >
-                        <option selected>Select Role</option>
+                        <option value="">Select Role</option>
                         <option value="student">Student</option>
                         <option value="teacher">Teacher</option>
                         <option value="admin">Admin</option>
@@ -166,44 +166,44 @@ const SignupPage = () => {
                 </div>
 
                 <div className={`${classes.gridItem} input-group mb-3`}>
-                    <span class="input-group-text" id="3">Email</span>
-                    <input type="text" class="form-control shadow-none " placeholder="xyz@iitbbs.ac.in" aria-label="xyz@gmail.com" aria-describedby="3"
+                    <span className="input-group-text" id="3">Email</span>
+                    <input type="text" className="form-control shadow-none " placeholder="xyz@iitbbs.ac.in" aria-label="xyz@gmail.com" aria-describedby="3"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
 
                 <div className={`${classes.gridItem} input-group mb-3`}>
-                    <span class="input-group-text" id="1">Name</span>
-                    <input type="text" class="form-control shadow-none " placeholder="Username" aria-label="Username" aria-describedby="1"
+                    <span className="input-group-text" id="1">Name</span>
+                    <input type="text" className="form-control shadow-none " placeholder="Username" aria-label="Username" aria-describedby="1"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
                 </div>
 
                 {role === 'student' && <div className={`${classes.gridItem} input-group mb-3`}>
-                    <span class="input-group-text" id="2">Roll Number</span>
-                    <input type="text" class="form-control shadow-none " placeholder="Roll number" aria-label="Roll number" aria-describedby="2"
+                    <span className="input-group-text" id="2">Roll Number</span>
+                    <input type="text" className="form-control shadow-none " placeholder="Roll number" aria-label="Roll number" aria-describedby="2"
                         value={rollNumber}
                         onChange={(e) => setRollNumber(e.target.value)}
                     />
                 </div>}
 
                 <div className={`${classes.gridItem} input-group mb-3`}>
-                    <span class="input-group-text" id="5">Phone</span>
-                    <input type="text" class="form-control shadow-none " aria-label="xyz@gmail.com" aria-describedby="5"
+                    <span className="input-group-text" id="5">Phone</span>
+                    <input type="text" className="form-control shadow-none " aria-label="xyz@gmail.com" aria-describedby="5"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                     />
                 </div>
 
                 <div className={`${classes.gridItem} input-group mb-3`}>
-                    <span class="input-group-text" id="9">Gender</span>
-                    <select class="form-control shadow-none" aria-label="Large select example"
+                    <span className="input-group-text" id="9">Gender</span>
+                    <select className="form-control shadow-none" aria-label="Large select example"
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
                     >
-                        <option selected>Select Gender</option>
+                        <option value="">Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                         <option value="none">Rather not say</option>
@@ -211,17 +211,17 @@ const SignupPage = () => {
                 </div>
 
                 <div className={`${classes.gridItem} input-group mb-3`}>
-                    <span class="input-group-text" id="5">DOB</span>
-                    <input ref={datepickerRef} type="date" class="form-control shadow-none "
+                    <span className="input-group-text" id="5">DOB</span>
+                    <input ref={datepickerRef} type="date" className="form-control shadow-none "
                         placeholder="DD-MM-YYYY"
                         aria-label="01-01-2000" aria-describedby="5" />
                 </div>
 
                 {role !== "admin" && <div className={`${classes.gridItem} input-group mb-3`}>
                     <span className="input-group-text">
-                        <label for="exampleDataList" class="form-label">Program</label>
+                        <label htmlFor="exampleDataList" className="form-label">Program</label>
                     </span>
-                    <input type="text" class="form-control shadow-none" list="datalistOptions"
+                    <input type="text" className="form-control shadow-none" list="datalistOptions"
                         placeholder={role === "teacher" ? "CS,EC,... Enter all programs you are taking" : "Enter your enrolled program "}
                         id="5"
                         value={program}
@@ -243,9 +243,9 @@ const SignupPage = () => {
 
                 {role !== "admin" && <div className={`${classes.gridItem} input-group mb-3`}>
                     <span className="input-group-text">
-                        <label for="exampleDataList2" class="form-label">Department</label>
+                        <label htmlFor="exampleDataList2" className="form-label">Department</label>
                     </span>
-                    <input type="text" class="form-control shadow-none" list="datalistOptions2"
+                    <input type="text" className="form-control shadow-none" list="datalistOptions2"
                         placeholder={role === "teacher" ? "SBS,SMS,... Enter all department you are taking" : "Enter your enrolled department "}
                         id="6"
                         value={dept}
@@ -265,9 +265,9 @@ const SignupPage = () => {
 
                 {role !== "admin" && <div className={`${classes.gridItem} input-group mb-3`}>
                     <span className="input-group-text">
-                        <label for="exampleDataList3" class="form-label">Batch</label>
+                        <label htmlFor="exampleDataList3" className="form-label">Batch</label>
                     </span>
-                    <input type="text" class="form-control shadow-none" list="datalistOptions3"
+                    <input type="text" className="form-control shadow-none" list="datalistOptions3"
                         placeholder={role === "teacher" ? "2020,2022,... Enter all batch you are taking" : "Enter your batch year"}
                         id="7"
                         value={batch}
@@ -285,9 +285,9 @@ const SignupPage = () => {
 
                 {role !== "admin" && <div className={`${classes.gridItem} input-group mb-3`}>
                     <span className="input-group-text">
-                        <label for="exampleDataList4" class="form-label">Semester</label>
+                        <label htmlFor="exampleDataList4" className="form-label">Semester</label>
                     </span>
-                    <input type="text" class="form-control shadow-none" list="datalistOptions40"
+                    <input type="text" className="form-control shadow-none" list="datalistOptions40"
                         placeholder={role === "teacher" ? "1,3,... Enter all sem you are taking" : "Enter your current sem"}
                         id="8"
                         value={semester}
@@ -302,7 +302,7 @@ const SignupPage = () => {
                 </div>
                 }
                 <div className="input-group mb-3">
-                    <span class="input-group-text">Password</span>
+                    <span className="input-group-text">Password</span>
                     <input
                         type={showPassword ? "text" : "password"}
                         id="password"
@@ -320,9 +320,9 @@ const SignupPage = () => {
 
 
             </div>
-            <div class={`${classes.gridContainer} ${classes.Container2}`}>
+            <div className={`${classes.gridContainer} ${classes.Container2}`}>
                 <div className={`${classes.gridItem} input-group mb-3`}>
-                    <span class="input-group-text" id="10">Address</span>
+                    <span className="input-group-text" id="10">Address</span>
                     <input type="text" className="form-control shadow-none w-75"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
@@ -332,14 +332,14 @@ const SignupPage = () => {
             </div>
             <div className={classes.photo}>
                 <h5>Profile Photo</h5>
-                <div class={`${classes.gridContainer} ${classes.Container2}`}>
+                <div className={`${classes.gridContainer} ${classes.Container2}`}>
 
                     <div className={`${classes.gridItem} input-group mb-3`}>
-                        <input type="file" class="form-control shadow-none " id="inputGroupFile02"
+                        <input type="file" className="form-control shadow-none " id="inputGroupFile02"
                             // value={profile}
                             onChange={(e) => setProfile(e.target.files[0])}
                         />
-                        <span class="input-group-text" for="inputGroupFile02" onClick={uploadHandler}>
+                        <span className="input-group-text" onClick={uploadHandler}>
 
                             {!fileuploading && 'Upload'}
                             {fileuploading && (
@@ -354,7 +354,7 @@ const SignupPage = () => {
             {!loading && <p className={classes.loading}> {error}</p>}
             {loading && <p className={classes.loading}>&nbsp; </p>}
             <div className={classes.button}>
-                <button type="button" class={` btn btn-success`} onClick={handleSubmitSignup} disabled={loading}                >
+                <button type="button" className="btn btn-success" onClick={handleSubmitSignup} disabled={loading}>
                     {loading ? (<div className="spinner-border text-danger" role="status" />) : "Submit"}
                 </button>
                 <div style={{ marginTop: "20px", }}><p onClick={handleLogin}>

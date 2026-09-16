@@ -82,7 +82,10 @@ exports.forgotPassword = catchasync(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
     console.log(err);
     return next(
-      new AppError("there was an error sending the email. try again later", 500)
+      new AppError(
+        "there was an error sending the email. try again later",
+        500,
+      ),
     );
   }
 });
@@ -247,9 +250,17 @@ exports.getalluserstats = catchasync(async (req, res, next) => {
   }
 });
 
-exports.getallusers = async (req, res) => {
+exports.getallusers = async (req, res, next) => {
   try {
-    const users = await usersignup.find();
+    if (req.user.role !== "admin") {
+      return next(new AppError("Admin access required", 403));
+    }
+    const users = await User.find({
+      role: { $in: ["student", "teacher"] },
+      isApproved: true,
+    })
+      .select("role email personal_info courses_taught courses_enrolled")
+      .sort({ "personal_info.name": 1 });
     res.status(200).json({
       status: "success",
       length: users.length,

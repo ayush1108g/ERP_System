@@ -1,11 +1,14 @@
 .container {
+  min-height: 100dvh;
+  box-sizing: border-box;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   align-content: center;
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
+  background: transparent;
 }
 .signin {
   cursor: pointer;
@@ -15,16 +18,26 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 22rem;
-  height: 30rem;
-  border: 1px solid #413232;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: white;
-  padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  border-radius: 14px;
+  width: min(100%, 430px);
+  min-height: 360px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 38px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 25px 70px rgba(28, 42, 70, 0.12);
   overflow: hidden;
+}
+
+.form :global(.h2) {
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+}
+.form :global(.input-group-text) {
+  border-color: var(--line);
+  background: #f6f8fb;
+  color: var(--muted);
 }
 
 .buttons {
@@ -44,7 +57,9 @@
 }
 
 .loading {
-  color: red;
+  min-height: 24px;
+  color: var(--danger);
+  text-align: center;
 }
 
 .buttom {
@@ -75,4 +90,15 @@
   border-radius: 50%;
   scale: 300%;
   z-index: 1;
+}
+
+@media (max-width: 520px) {
+  .container {
+    padding: 16px;
+  }
+  .form {
+    min-height: 340px;
+    padding: 28px 20px;
+    border-radius: 16px;
+  }
 }

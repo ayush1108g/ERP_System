@@ -50,7 +50,7 @@ const ForgotPassPage = () => {
   return (
     <div>
       <div className={`row d-flex align-items-center ${classes.container}`}>
-        <motion.form transition={{ duration: 0.5, ease: "easeInOut" }} className={`border-bottom-0 ${classes.form}`}>
+        <motion.form transition={{ duration: 0.5, ease: "easeInOut" }} className={`border-bottom-0 ${classes.form}`} onSubmit={proceedtoResethandler}>
           <p className="h2">Forgot Password</p>
           <p>Enter your email to reset your password.</p>
           {!isLoading && <p className={classes.loading}> {errormsg}</p>}
@@ -66,7 +66,7 @@ const ForgotPassPage = () => {
           {/* Spacing */}
           <div style={{ minHeight: '50px' }} />
           <div className={classes.buttons}>
-            <button className="btn btn-primary w-100" type="submit" onClick={proceedtoResethandler} disabled={isLoading}
+            <button className="btn btn-primary w-100" type="submit" disabled={isLoading}
               style={{ height: isLoading ? "" : "50px" }}>
               {isLoading ? (<div className="spinner-border text-danger" role="status" />) : "Proceed"}
             </button>

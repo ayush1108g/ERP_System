@@ -33,7 +33,7 @@ router
   .route("/approve/:id")
   .get(authcontroller.protect, userController.approveuser);
 
-router.route("/getall").get(userController.getallusers);
+router.route("/getall").get(authcontroller.protect, userController.getallusers);
 
 router
   .route("/getalluserstats")

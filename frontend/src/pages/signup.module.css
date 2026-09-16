@@ -7,6 +7,13 @@
   background: var(--surface);
   box-shadow: var(--shadow);
 }
+.container::before {
+  content: "Create your campus account";
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
 .h1 {
   margin: 0 0 28px;
   text-align: left;
@@ -17,6 +24,9 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   margin: 0;
+}
+.gridItem {
+  min-width: 0;
 }
 .gridContainer input,
 .gridContainer select {
@@ -43,6 +53,16 @@
   border-radius: 10px;
   text-align: center;
 }
+.button button {
+  min-width: 160px;
+}
+.button p {
+  color: var(--muted);
+}
+.photo {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+}
 .loading {
   color: var(--danger);
 }
@@ -53,5 +73,8 @@
   }
   .gridContainer {
     grid-template-columns: 1fr;
+  }
+  .h1 {
+    font-size: 1.65rem;
   }
 }

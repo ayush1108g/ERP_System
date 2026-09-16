@@ -14,6 +14,7 @@ import { useAlert } from "../../store/context/Alert-context";
 import { backendUrl } from "../../constant";
 import LoginContext from "../../store/context/loginContext";
 import { useSidebar } from "../../store/context/sidebarcontext";
+import demoProfilePhoto from "../../assets/demo_profile_photo.png";
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 
@@ -239,21 +240,17 @@ const AdminDashBoard = () => {
                 style={{ width: isSidebarOpen ? '200px' : '0px', display: isSidebarOpen ? 'block' : 'none' }}
                 handleAttendance={handleAttendance} openModal={openModal}
             />
-            <div className={classes.icon} style={{ left: isSidebarOpen ? '203px' : '5px' }} onClick={handleSidebar}            >
-                {isSidebarOpen && <MdArrowBackIosNew />}
-                {!isSidebarOpen && <>
-                    <MdArrowForwardIos style={{ boxShadow: "0 0 10px #00ff00" }} />
-                    <MdArrowForwardIos style={{ boxShadow: "0 0 10px #00ff00" }} />
-                </>}
-            </div>
-            <div className={classes.content} style={{ width: isSidebarOpen ? 'calc(100vw - 200px)' : '100vw' }}            >
+            <button type="button" className={classes.icon} aria-label={isSidebarOpen ? "Collapse navigation" : "Expand navigation"} title={isSidebarOpen ? "Collapse navigation" : "Expand navigation"} style={{ left: isSidebarOpen ? '203px' : '5px' }} onClick={handleSidebar}>
+                {isSidebarOpen ? <MdArrowBackIosNew /> : <MdArrowForwardIos />}
+            </button>
+            <div className={classes.content} style={{ width: isSidebarOpen ? 'calc(100vw - 200px)' : 'calc(100vw - 20px)' }}            >
                 <header className="header">
                     <div className="header-text">
                         <h1>Welcome,👋🏽</h1>
                     </div>
                     <div className="header-profile" onClick={openProfilePage}>
                         <p>{LoginCtx.role}</p>
-                        <img src={LoginCtx?.user?.personal_info?.profile_picture} alt="profile_photo" />
+                        <img src={LoginCtx?.user?.personal_info?.profile_picture || demoProfilePhoto} alt="profile_photo" onError={(event) => { event.currentTarget.src = demoProfilePhoto; }} />
                         <p>{LoginCtx.name}</p>
                     </div>
                 </header>

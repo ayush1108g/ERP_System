@@ -8,6 +8,7 @@ import axios from "axios";
 import { backendUrl } from "../constant.js";
 import LoginContext from "../store/context/loginContext.js";
 import { useAlert } from "../store/context/Alert-context.js";
+import demoProfilePhoto from "../assets/demo_profile_photo.png";
 
 const Login = () => {
   const alertCtx = useAlert();
@@ -68,7 +69,6 @@ const Login = () => {
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
-    alertCtx.showAlert('danger', 'Server is Gearing Up. Please Wait...');
     //check if email and password are entered
     if (enteredEmail.trim().length === 0 || enteredPassword.trim().length === 0)
       return setMessage("Please enter all the fields");
@@ -77,7 +77,7 @@ const Login = () => {
     try {
       setIsLoading(true);
       let resp;
-      resp = await axios.post(`${backendUrl}/api/v1/users/login`, data, { withCredentials: true }, { timeout: 30000, }); console.log(resp);
+      resp = await axios.post(`${backendUrl}/api/v1/users/login`, data, { withCredentials: true, timeout: 30000 });
 
       if (resp.status === 201 || resp.status === 200) {
         emailInputRef.current.value = "";
@@ -89,9 +89,7 @@ const Login = () => {
         loginCtx.login(resp.data.AccessToken, resp.data.RefreshToken, resp.data.data.user); // login function from loginContext.js
         setMessage("Success");
         alertCtx.showAlert("success", "Logged In Successfully");
-        // setTimeout(() => {
-        // navigate("/");
-        // }, 2000);
+        navigate("/");
       }
     } catch (error) {
       console.log(error);
@@ -107,9 +105,9 @@ const Login = () => {
 
 
   return (
-    <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+    <div className={classes.page}>
       <div className={`row d-flex align-items-center ${classes.container}`}>
-        <motion.form key={loginCtx.isLoggedIn} className={`border-bottom-0 ${classes.form}`}>
+        <motion.form key={loginCtx.isLoggedIn} className={`border-bottom-0 ${classes.form}`} onSubmit={LoginHandler}>
 
           <h2>Login</h2>
           {!isLoading && <p className={classes.loading}> {message}</p>}
@@ -135,7 +133,7 @@ const Login = () => {
           <div style={{ minHeight: '50px' }} />
 
           <div className={classes.buttons}>
-            <button className="btn btn-primary w-100" type="submit" onClick={LoginHandler} style={{ height: isLoading ? "" : "50px" }} >
+            <button className="btn btn-primary w-100" type="submit" disabled={isLoading} style={{ height: isLoading ? "" : "50px" }} >
               {isLoading ? (<div className="spinner-border text-danger" role="status" />) : "Login"}
             </button>
           </div>
@@ -155,13 +153,13 @@ const Login = () => {
       </div >
 
       {/* Dummy Data Selection - Top Right Corner */}
-      <div style={{ position: 'absolute', top: '20px', right: '20px', backgroundColor: '#fff1', minWidth: "200px", padding: '10px', borderRadius: '12px', zIndex: 990, boxShadow: '0 0 10px rgba(0, 0, 0.3, 0.3)' }}>
+      <div className={classes.demoPanel}>
         <p>Select Dummy Data to Login:</p>
         {dummytext.map((text, index) => (
           <div key={index} style={{ marginBottom: '10px', cursor: 'pointer' }} onClick={() => handleSelectDummy(index)}>
             <hr />
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <img src={`https://via.placeholder.com/40?text=${text.charAt(0).toUpperCase()}`} alt={text} style={{ borderRadius: '50%', marginRight: '10px' }} />
+              <img src={demoProfilePhoto} alt={`${text} demo account`} />
               <span>{text.toLocaleUpperCase()}</span>
             </div>
           </div>

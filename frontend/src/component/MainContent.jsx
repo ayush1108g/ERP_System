@@ -24,19 +24,16 @@ const MainContent = () => {
         "/admin",
     ];
     return (
-        <div style={{ width: "98vw", height: "100vh" }}>
+        <div className={classes.shell}>
             {loginCtx.loading && <FullAuthLoader />}
 
             {!sidebarNotRequired.includes(location.pathname) &&
                 !location.pathname.includes("/login") && (
-                    <div className={classes.navbar} style={{ maxWidth: isSidebarOpen ? "210px" : "20px" }}>
-                        <Navbar className={classes.navbar2} style={{ maxWidth: isSidebarOpen ? "200px" : "10px", display: isSidebarOpen ? "block" : "none", }} />
-                        <div className={classes.icon} style={{ position: "fixed", left: isSidebarOpen ? "203px" : "5px", zIndex: 10, top: "48vh", }} onClick={handleSidebar}>
-                            {!isSidebarOpen ? (<div style={{ display: "flex", alignItems: "center" }}>
-                                <MdArrowForwardIos style={{ boxShadow: "0 0 10px #00ff00" }} />
-                                <MdArrowForwardIos style={{ boxShadow: "0 0 10px #00ff00" }} />
-                            </div>) : (<MdArrowBackIosNew />)}
-                        </div>
+                    <div className={classes.navbar}>
+                        <Navbar className={classes.navbar2} style={{ display: isSidebarOpen ? "block" : "none", }} />
+                        <button type="button" className={classes.icon} aria-label={isSidebarOpen ? "Collapse navigation" : "Expand navigation"} title={isSidebarOpen ? "Collapse navigation" : "Expand navigation"} style={{ position: "fixed", left: isSidebarOpen ? "203px" : "5px", zIndex: 10, top: "48vh", }} onClick={handleSidebar}>
+                            {isSidebarOpen ? <MdArrowBackIosNew /> : <MdArrowForwardIos />}
+                        </button>
                     </div>
                 )}
             <RoutesWithAnimation />

@@ -41,7 +41,7 @@ function Navbar(props) {
     <div>
       <div className={`navbar ${props.className}`} style={props.style}>
         <div className="iitbbs" onClick={() => navigate("/")}>
-          <img src={iitbbslogo} alt="" />
+          <img src={iitbbslogo} alt="IIT BBS" />
           <h3>IIT BBS</h3>
         </div>
         {<div
@@ -54,7 +54,7 @@ function Navbar(props) {
         {navItems.map((item, index) => {
           return (
             <div
-              className="navbar-item"
+              className={`navbar-item ${location.pathname === item.path || (item.path === '/' && location.pathname === '/admin') ? 'active' : ''}`}
               key={index}
               onClick={() => navigateHandler(item.path)}
             >

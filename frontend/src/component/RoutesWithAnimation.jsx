@@ -43,21 +43,22 @@ const RoutesWithAnimation = () => {
     const navigate = useNavigate();
     const authCtx = useContext(LoginContext);
     const [cookie] = useCookies(["AccessToken", "RefreshToken"]);
-    console.log(authCtx);
     // Verify the token and set the user data in the context
     useEffect(() => {
         const asyncFunc = async (AccessToken) => {
+            if (!AccessToken) {
+                authCtx.setIsLoggedIn(false);
+                authCtx.setLoading(false);
+                authCtx.setIsLoginDataFetching(false);
+                return;
+            }
             try {
-                const token = AccessToken;
-                const response = await verifyToken(token);
-                console.log(response);
+                const response = await verifyToken(AccessToken);
                 if (response?.isLoggedin === true) {
-                    authCtx.setAccessToken(token);
+                    authCtx.setAccessToken(AccessToken);
                     authCtx.setRefreshToken(cookie?.RefreshToken);
                     authCtx.setIsLoggedIn(true);
                     authCtx.setName(response?.name);
-                    authCtx.setLoading(false);
-                    authCtx.setIsLoginDataFetching(false);
                 }
             } catch (err) {
                 if (
@@ -67,12 +68,14 @@ const RoutesWithAnimation = () => {
                     console.log("jwt expired");
                     return refreshAccessToken(asyncFunc, authCtx);
                 }
-                console.log(err);
+                authCtx.setIsLoggedIn(false);
+            } finally {
+                authCtx.setLoading(false);
+                authCtx.setIsLoginDataFetching(false);
             }
         };
-        console.log(cookie.AccessToken);
         asyncFunc(cookie.AccessToken);
-    }, [authCtx, cookie.AccessToken, cookie.RefreshToken]);
+    }, [cookie.AccessToken, cookie.RefreshToken]);
 
     // Redirect to login page if not logged in
     useEffect(() => {
@@ -86,7 +89,7 @@ const RoutesWithAnimation = () => {
     // Update the user data in the context
     useEffect(() => {
         const asyncFunc0 = async () => {
-            if (!authCtx.isLoginDataFetching && !authCtx.user) {
+            if (authCtx.isLoggedIn && !authCtx.isLoginDataFetching && !authCtx.user && cookie.AccessToken) {
                 try {
                     const resp = await axios.get(`${backendUrl}/api/v1/users/update`, { headers: { Authorization: `Bearer ${cookie.AccessToken}` }, });
                     console.log(resp.data.data);
@@ -98,7 +101,7 @@ const RoutesWithAnimation = () => {
             }
         };
         asyncFunc0();
-    }, [authCtx, cookie.AccessToken]);
+    }, [authCtx.isLoggedIn, authCtx.isLoginDataFetching, authCtx.user, cookie.AccessToken]);
 
     return (<Routes location={location} key={location.key}>
         <Route path="/signup" element={<SignupPage />} />

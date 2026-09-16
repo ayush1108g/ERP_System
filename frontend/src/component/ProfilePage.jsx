@@ -3,6 +3,7 @@ import classes from "./ProfilePage.module.css"
 
 import LoginContext from "../store/context/loginContext";
 import { useSidebar } from "../store/context/sidebarcontext";
+import demoProfilePhoto from "../assets/demo_profile_photo.png";
 
 const Profile_page = () => {
     const Loginctx = useContext(LoginContext);
@@ -18,7 +19,7 @@ const Profile_page = () => {
         </div>
         <div className={classes.grandParent}>
             <div className={classes.parent1}>
-                <img class={classes.circularBox} src={user?.personal_info?.profile_picture} alt="profile" />
+                <img class={classes.circularBox} src={user?.personal_info?.profile_picture || demoProfilePhoto} alt="profile" onError={(event) => { event.currentTarget.src = demoProfilePhoto; }} />
                 <div className={classes.details}>
                     <div>
                         {user?.personal_info.name}

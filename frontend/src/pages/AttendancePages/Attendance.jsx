@@ -7,6 +7,7 @@ import { backendUrl } from "../../constant";
 import { useAlert } from "../../store/context/Alert-context";
 import LoginContext from "../../store/context/loginContext";
 import { useSidebar } from "../../store/context/sidebarcontext";
+import { MdDownload } from "react-icons/md";
 
 // Haversine formula to calculate distance between two points on earth
 const haversine = (lat1, lon1, lat2, lon2) => {
@@ -176,9 +177,36 @@ const Attendance = () => {
             }
         });
     };
+
+    const downloadAttendance = () => {
+        const rows = [
+            ["Course", "Total Classes", "Present", "Absent", "Attendance %"],
+            ...courseData.map((item) => [
+                item?.course?.name || "Course",
+                item.total,
+                item.present,
+                item.absent,
+                item.total === 0 ? 0 : ((item.present * 100) / item.total).toFixed(2)
+            ])
+        ];
+        const csv = rows.map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\r\n");
+        const blob = new Blob([`\uFEFF${csv}`], { type: "application/vnd.ms-excel;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "attendance-summary.xls";
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: isSidebarOpen ? '210px' : '10px' }}>
-            <h1>Attendance</h1>
+            <div style={{ width: '100%', maxWidth: '1100px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+                <h1>Attendance</h1>
+                <button className="btn btn-secondary" type="button" onClick={downloadAttendance} disabled={!courseData.length}>
+                    <MdDownload /> Download Excel
+                </button>
+            </div>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', flexWrap: 'wrap' }}>
                 {courseData.map((item, index) => {
                     return <div key={index}

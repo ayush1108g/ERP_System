@@ -1,93 +1,57 @@
 .container {
-  margin: 30px 0 30px 0;
-  padding: 30px 0 30px 0;
-  width: 80%;
-  height: fit-content;
-  box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.65);
+  width: min(900px, calc(100% - 32px));
+  margin: 24px auto;
+  padding: 34px;
+  border: 1px solid var(--line);
   border-radius: 20px;
-  border: 0.5px solid black;
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
-.form-control:focus {
-  box-shadow: none !important;
-}
-
 .h1 {
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  /* margin: auto;
-    margin-left:55vw; */
+  margin: 0 0 28px;
+  text-align: left;
+  font-size: 2rem;
 }
-
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 10px;
-  font-size: larger;
-  margin: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
 }
-
-.gridContainer input {
-  border: 2px solid rgb(109, 105, 105);
-}
+.gridContainer input,
 .gridContainer select {
-  border: 2px solid rgb(109, 105, 105);
+  border: 1px solid var(--line);
 }
-
 .gridContainer span {
-  border: 2px solid rgb(109, 105, 105);
-}
-
-.inputs {
-  font-size: larger;
-  margin: 4vw;
-  margin-right: 10vw;
-}
-.spans {
-  border: 2px solid rgb(109, 105, 105);
+  border: 1px solid var(--line);
+  background: #f6f8fb;
+  color: var(--muted);
 }
 .inputs {
-  width: 10vw;
+  margin: 24px 0;
+  font-size: 1rem;
 }
 .Container2 {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-gap: 20px;
-  font-size: larger;
-  margin: 20px;
+  gap: 16px;
+  margin: 20px 0;
 }
-
 .photo {
-  /* border: 2px solid black; */
-  /* margin: 20vw; */
-  /* margin-top: 5vw; */
-  /* margin-bottom: 5vw; */
-  /* padding: 2vw; */
-  /* border-radius: 4vw; */
-  padding: 30px;
-  padding-top: 0px;
+  padding: 20px 0 0;
 }
-
 .button {
-  border-radius: 2vw;
-  font-size: larger;
+  border-radius: 10px;
   text-align: center;
-  justify-content: center;
-  align-items: center;
 }
-
 .loading {
-  color: red;
-  display: block;
-  margin: 15px;
-  /* scale: 15%; */
-  /* border: 16px solid #f3f3f3; */
-  /* background-color: red; */
+  color: var(--danger);
 }
-
-@media screen and (min-width: 700px) {
+@media (max-width: 650px) {
+  .container {
+    width: calc(100% - 24px);
+    padding: 22px 16px;
+  }
   .gridContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
   }
 }

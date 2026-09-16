@@ -1,37 +1,39 @@
 .title {
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+  margin: 0;
+  padding: 28px 24px 0;
+  color: var(--ink);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
 }
-
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  grid-gap: 50px;
-  margin: 4vw;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin: 24px;
 }
-
 .gridItem {
-  background-color: #f0f0f0;
-  padding: 20px;
-  font-size: large;
-  border-radius: 10px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-size: 0.9rem;
 }
-
 .attendanceGrid {
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  margin-left: 2vw;
-  margin-bottom: 2vw;
-  width: 98%;
+  width: calc(100% - 48px);
+  margin: 24px;
   overflow-x: auto;
 }
-
-.attendanceGrid td {
-  border: 2px solid black;
-}
-
+.attendanceGrid td,
 .attendanceGrid th {
-  border: 2px solid black;
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 720px) {
+  .title {
+    padding: 22px 16px 0;
+  }
+  .gridContainer,
+  .attendanceGrid {
+    width: calc(100% - 32px);
+    margin: 16px;
+  }
 }

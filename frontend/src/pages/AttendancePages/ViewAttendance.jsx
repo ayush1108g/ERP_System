@@ -9,6 +9,7 @@ import { backendUrl } from "../../constant";
 import LoginContext from '../../store/context/loginContext';
 import { useAlert } from '../../store/context/Alert-context';
 import { useSidebar } from '../../store/context/sidebarcontext';
+import { MdDownload } from "react-icons/md";
 
 const View_attendance = () => {
     const Alertctx = useAlert();
@@ -71,6 +72,24 @@ const View_attendance = () => {
     const uniqueDates = Array.from(new Set(attendanceData?.map(item => item.date)));
     const uniqueNames = Array.from(new Set(attendanceData?.map(item => item.student_id)));
 
+    const downloadAttendance = () => {
+        const rows = [
+            ["Student", ...uniqueDates],
+            ...uniqueNames.map((studentId) => [
+                names[studentId] || studentId,
+                ...uniqueDates.map((date) => attendanceData.some((item) => item.student_id === studentId && item.date === date) ? "Present" : "Absent")
+            ])
+        ];
+        const csv = rows.map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\r\n");
+        const blob = new Blob([`\uFEFF${csv}`], { type: "application/vnd.ms-excel;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${courseData?.name || "attendance"}-attendance.xls`;
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+
     const tableHeaderCells = uniqueDates.map(date => (<th key={date}>{date}</th>));
 
     // Generate table rows for names
@@ -129,6 +148,12 @@ const View_attendance = () => {
                 <div class={classes.gridItem}>
                     <div>Course : </div>
                     <div className={classes.yoyo}>{courseData?.name}</div>
+                </div>
+                <div class={classes.gridItem}>
+                    <div>Export Report : </div>
+                    <button className="btn btn-secondary" type="button" onClick={downloadAttendance} disabled={!attendanceData.length}>
+                        <MdDownload /> Download Excel
+                    </button>
                 </div>
                 <div class={classes.gridItem}>
                     <div>Faculty : </div>

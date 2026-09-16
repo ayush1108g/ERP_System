@@ -5,6 +5,7 @@ import LoginContext from '../store/context/loginContext';
 // import axios from 'axios';
 import { useNavigate } from "react-router"
 import { useAlert } from '../store/context/Alert-context';
+import './Modal.css';
 
 const ModalA = (props) => {
     console.log(props);
@@ -46,68 +47,40 @@ const ModalA = (props) => {
 
     return (
         props.isOpen && (
-            <div
-                style={{
-                    width: '100vw',
-                    height: '100vh',
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    backgroundColor: 'rgba(0,0,0,0.5)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 1000
-                }}
+            <div className="modal-backdrop"
                 onClick={outsideClickHandler}
             >
-                <div
-                    style={{
-                        width: "300px",
-                        height: "300px",
-                        backgroundColor: "white",
-                        borderRadius: "10px",
-                        padding: "10px",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        gap: "10px",
-                    }}
+                <div className="erp-modal"
                     onClick={insideClickHandler}
                 >
-                    <h3>{props.data.charAt(0).toUpperCase() + props.data.slice(1)} for</h3>
-                    <div className={` input-group mb-3`}>
-                        <span class="input-group-text" id="9">Course</span>
-                        <select class="form-control shadow-none" aria-label="Large select example"
+                    <div className="erp-modal-header"><div><span className="eyebrow">Choose a course</span><h3>{props.data.charAt(0).toUpperCase() + props.data.slice(1)} for</h3></div><button type="button" className="modal-close" onClick={() => props.close(false)} aria-label="Close">&times;</button></div>
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="9">Course</span>
+                        <select className="form-control shadow-none" aria-label="Large select example"
                             value={selectedCourse}
                             onChange={(e) => { setSelectedCourse(e.target.value) }}
                         >
-                            <option selected value={null}>Select Course </option>
+                            <option value={null}>Select Course </option>
                             {courses.map((course) => {
                                 if (!course) return null;
                                 return (
-                                    <option value={course._id}>{course.name}</option>
+                                    <option key={course._id} value={course._id}>{course.name}</option>
                                 )
                             })}
                         </select>
                     </div>
 
                     {/* Bootstrap button */}
-                    <div style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        gap: "10px",
-                        flexDirection: "row"
-                    }}>
+                    <div className="erp-modal-actions">
 
                         <button
                             type="button"
-                            class="btn btn-primary"
+                            className="btn btn-light"
                             onClick={() => props.close(false)}
                         >Close</button>
                         <button
                             type="button"
-                            class="btn btn-primary"
+                            className="btn btn-primary"
                             onClick={() => submitHandler()}
                         >Submit</button>
                     </div>

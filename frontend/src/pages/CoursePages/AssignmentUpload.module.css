@@ -1,11 +1,29 @@
-.title{
-    margin: 30px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+.title {
+  margin: 30px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.inputform{
-    margin:5vw ;
-
+.inputform {
+  margin: 5vw;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.title {
+  margin: 28px auto 0;
+  color: var(--ink);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+@media (max-width: 620px) {
+  .inputform {
+    margin: 16px;
+    padding: 20px 16px;
+  }
 }

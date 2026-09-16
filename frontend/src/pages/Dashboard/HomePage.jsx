@@ -13,6 +13,7 @@ import { backendUrl } from "../../constant";
 import { useAlert } from "../../store/context/Alert-context";
 import classes from './AdminDashboard.module.css';
 import { useSidebar } from "../../store/context/sidebarcontext";
+import demoProfilePhoto from "../../assets/demo_profile_photo.png";
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 function HomePage() {
@@ -199,104 +200,101 @@ function HomePage() {
           <div className={classes.navbar} style={{ width: isSidebarOpen ? '200px' : '20px' }}>
             <Navbar className={classes.navbar2} style={{ width: isSidebarOpen ? '200px' : '0px', display: isSidebarOpen ? 'block' : 'none' }}
               handleAttendance={handleAttendance} openModal={openModal} />
-            <div className={classes.icon} style={{ left: isSidebarOpen ? '203px' : '5px', zIndex: 10 }} onClick={handleSidebar} >
-              {!isSidebarOpen ? <>
-                <MdArrowForwardIos style={{ boxShadow: "0 0 10px #00ff00" }} />
-                <MdArrowForwardIos style={{ boxShadow: "0 0 10px #00ff00" }} />
-              </> : <MdArrowBackIosNew />}
-            </div>
+            <button type="button" className={classes.icon} aria-label={isSidebarOpen ? "Collapse navigation" : "Expand navigation"} title={isSidebarOpen ? "Collapse navigation" : "Expand navigation"} style={{ left: isSidebarOpen ? '203px' : '5px', zIndex: 10 }} onClick={handleSidebar}>
+              {isSidebarOpen ? <MdArrowBackIosNew /> : <MdArrowForwardIos />}
+            </button>
           </div>
+        </div>
 
-          <div className="maincontainer">
-            <main className="main">
-              <div className="container" style={{ left: isSidebarOpen ? '200px' : '0px', }} >
-                <header className="header">
-                  <div className="header-text">
-                    <h1>Welcome,👋🏽</h1>
-                  </div>
-                  <div className="header-profile" onClick={openProfilePage}>
-                    <p>{LoginCtx.role}</p>
-                    <img src={LoginCtx?.user?.personal_info?.profile_picture} alt="profile_photo" />
-                    <p>{LoginCtx.name}</p>
-                  </div>
-                </header>
+        <div className="maincontainer">
+          <main className="main">
+            <div className={`container ${!isSidebarOpen ? 'sidebar-collapsed' : ''}`} >
+              <header className="header">
+                <div className="header-text">
+                  <h1>Welcome,👋🏽</h1>
+                </div>
+                <div className="header-profile" onClick={openProfilePage}>
+                  <p>{LoginCtx.role}</p>
+                  <img src={LoginCtx?.user?.personal_info?.profile_picture || demoProfilePhoto} alt="profile_photo" onError={(event) => { event.currentTarget.src = demoProfilePhoto; }} />
+                  <p>{LoginCtx.name}</p>
+                </div>
+              </header>
 
-                <section className="today-timetable">
-                  <h2>Today's Timetable</h2>
-                  <div className="items">
-                    {todayTimetable.map((course, index) => {
-                      if (course === null) { return null; }
-                      return (
-                        <div className="timetable-card" key={index}>
-                          <div className="time">{course.schedule[0].time}</div>
-                          <div className="subject">{course.name}</div>
-                          <div className="topic-name">
-                            {course.professor[0]}
-                          </div>
+              <section className="today-timetable">
+                <h2>Today's Timetable</h2>
+                <div className="items">
+                  {todayTimetable.map((course, index) => {
+                    if (course === null) { return null; }
+                    return (
+                      <div className="timetable-card" key={index}>
+                        <div className="time">{course.schedule[0].time}</div>
+                        <div className="subject">{course.name}</div>
+                        <div className="topic-name">
+                          {course.professor[0]}
                         </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <main className="main">
+
+                <section className="materiais">
+                  <h2>Materials</h2>
+                  <div className="materiais-grid">
+                    <div className="materiais-card" onClick={openMyCoursesPage} >
+                      <h3>Courses</h3>
+                      <p>This Semester</p>
+                    </div>
+                    <div className="materiais-card" onClick={() => handleAttendance()} >
+                      <h3>Attendance</h3>
+                      {LoginCtx?.role === "student" && <p>
+                        This Semester: &nbsp;
+                        {Attendance.total === 0 ? 0 : (Attendance.present / Attendance.total) * 100}{" "} % </p>}
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }} >
+                        <div style={{ maxWidth: "150px", maxHeight: "200px" }}
+                        >
+                          {<PieChart startAngle={-90} lengthAngle={-360} lineWidth={50} labelPosition={50}
+                            label={({ dataEntry }) => { if (dataEntry.value === 0 || isNaN(dataEntry)) { return null; } return `${dataEntry.title}: ${dataEntry.value}`; }}
+                            labelStyle={{ fontSize: "8px", fontFamily: "sans-serif", fill: "#121212", }}
+                            data={[{ title: "Present", value: Attendance.present, color: "#D2DAFF", }, { title: "Absent", value: Attendance.absent, color: "#B1B2FF", },]} />}
+                        </div>
+                      </div>
+                      {LoginCtx?.role === "student" && <p>Total : {Attendance.total}</p>}
+                    </div>
+
+                    <div className="materiais-card" onClick={() => openModal("assignment")} >
+                      <h3>Assignment</h3>
+                      <p>This Semester</p>
+                    </div>
+
+                    <div className="materiais-card" onClick={() => openModal("feedback")} >
+                      <h3>Feedback</h3>
+                      <p></p>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="update">
+                  <h2>Recent Updates</h2>
+                  <div className="update-items">
+                    {announcement.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          {item.time}
+                          <p>{item.message}</p>
+                        </li>
                       );
                     })}
                   </div>
                 </section>
 
-                <main className="main">
-
-                  <section className="materiais">
-                    <h2>Materials</h2>
-                    <div className="materiais-grid">
-                      <div className="materiais-card" onClick={openMyCoursesPage} >
-                        <h3>Courses</h3>
-                        <p>This Semester</p>
-                      </div>
-                      <div className="materiais-card" onClick={() => handleAttendance()} >
-                        <h3>Attendance</h3>
-                        {LoginCtx?.role === "student" && <p>
-                          This Semester: &nbsp;
-                          {Attendance.total === 0 ? 0 : (Attendance.present / Attendance.total) * 100}{" "} % </p>}
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }} >
-                          <div style={{ maxWidth: "150px", maxHeight: "200px" }}
-                          >
-                            {<PieChart startAngle={-90} lengthAngle={-360} lineWidth={50} labelPosition={50}
-                              label={({ dataEntry }) => { if (dataEntry.value === 0 || isNaN(dataEntry)) { return null; } return `${dataEntry.title}: ${dataEntry.value}`; }}
-                              labelStyle={{ fontSize: "8px", fontFamily: "sans-serif", fill: "#121212", }}
-                              data={[{ title: "Present", value: Attendance.present, color: "#D2DAFF", }, { title: "Absent", value: Attendance.absent, color: "#B1B2FF", },]} />}
-                          </div>
-                        </div>
-                        {LoginCtx?.role === "student" && <p>Total : {Attendance.total}</p>}
-                      </div>
-
-                      <div className="materiais-card" onClick={() => openModal("assignment")} >
-                        <h3>Assignment</h3>
-                        <p>This Semester</p>
-                      </div>
-
-                      <div className="materiais-card" onClick={() => openModal("feedback")} >
-                        <h3>Feedback</h3>
-                        <p></p>
-                      </div>
-                    </div>
-                  </section>
-
-                  <section className="update">
-                    <h2>Recent Updates</h2>
-                    <div className="update-items">
-                      {announcement.map((item, index) => {
-                        return (
-                          <li key={index}>
-                            {item.time}
-                            <p>{item.message}</p>
-                          </li>
-                        );
-                      })}
-                    </div>
-                  </section>
-
-                </main>
-              </div>
-            </main>
-          </div>
-
+              </main>
+            </div>
+          </main>
         </div>
+
       </div>
     </>
   );

@@ -1,11 +1,25 @@
-.title{
-    margin: 30px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+.title {
+  max-width: 720px;
+  margin: 0 auto 24px;
+  padding-top: 28px;
+  color: var(--ink);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
 }
-
-.inputform{
-    margin:5vw ;
-
+.inputform {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+@media (max-width: 720px) {
+  .title {
+    padding: 22px 16px 0;
+  }
+  .inputform {
+    margin: 0 16px;
+    padding: 20px;
+  }
 }

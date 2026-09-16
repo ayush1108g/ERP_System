@@ -1,0 +1,54 @@
+.shell {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.navbar {
+  position: relative;
+  z-index: 20;
+}
+
+.navbar2 {
+  transition:
+    width 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.icon {
+  position: fixed;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--primary);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(28, 42, 70, 0.12);
+  cursor: pointer;
+  transition:
+    left 0.25s ease,
+    transform 0.18s ease;
+}
+
+.navbar2 {
+  max-width: none !important;
+}
+.icon:hover {
+  transform: scale(1.08);
+}
+
+@media (max-width: 720px) {
+  .navbar {
+    max-width: 0 !important;
+  }
+  .navbar2 {
+    max-width: none !important;
+  }
+  .icon {
+    top: auto !important;
+    bottom: 18px;
+    left: 14px !important;
+  }
+}

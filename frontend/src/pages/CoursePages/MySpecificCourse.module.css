@@ -75,6 +75,61 @@
   color: var(--ink);
   font-weight: 700;
 }
+.scheduleEditor {
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.scheduleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.scheduleHeader h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+.scheduleHeader p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.scheduleRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.scheduleRow select,
+.scheduleRow input {
+  flex: 1;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.scheduleRow .btn {
+  flex: 0 0 auto;
+}
+@media (max-width: 620px) {
+  .scheduleEditor {
+    margin: 0 16px 24px;
+    padding: 18px 16px;
+  }
+  .scheduleHeader,
+  .scheduleRow {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .scheduleRow .btn {
+    width: 100%;
+  }
+}
 .b {
   max-width: 1100px;
   margin: 10px auto 40px;

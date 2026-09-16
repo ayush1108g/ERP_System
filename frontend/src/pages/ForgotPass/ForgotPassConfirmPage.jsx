@@ -25,11 +25,13 @@ const ForgotPassConfirmPage = () => {
   const [showPassword2, setShowPassword2] = useState(false);
 
   //check if id is valid or not else redirect to error page
-  if (!id.includes('-') || id.split("-").length !== 3 || !id.includes('@')) {
+  const decodedId = decodeURIComponent(id || "");
+  if (!decodedId.startsWith("fpass987-") || !decodedId.includes("@")) {
     return <Navigate to={`/*?error=Not%20Authorised`} />;
   }
-  const emailid = id.split("-")[1];
-  const code = id.split("-")[2];
+  const lastSeparator = decodedId.lastIndexOf("-");
+  const emailid = decodedId.slice("fpass987-".length, lastSeparator);
+  const code = decodedId.slice(lastSeparator + 1);
 
   //redirect to login page
   const proceedtoLogin = async (event) => {
@@ -57,7 +59,7 @@ const ForgotPassConfirmPage = () => {
 
       setCookie("AccessToken", resp.data.AccessToken, { path: "/", maxAge: 60 * 60 * 24 * 1 * 0.2 }); // 20% of 1 day = 4.8 hours
       setCookie("RefreshToken", resp.data.RefreshToken, { path: "/", maxAge: 60 * 60 * 24 * 1 * 0.6 }); // 60% of 1 day = 14.4 hours
-      loginctx.login(resp.data.AccessToken, resp.data.RefreshToken, resp.data.name); // login user
+      loginctx.login(resp.data.AccessToken, resp.data.RefreshToken, resp.data.data.user); // login user
       if (resp.data.status === "success") {
         localStorage.removeItem("Passcode");
         localStorage.removeItem("Passcode2");

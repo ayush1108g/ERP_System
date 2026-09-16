@@ -47,28 +47,28 @@ const Add_courses = () => {
     return (<div style={{ marginLeft: isSidebarOpen ? '210px' : '10px' }}>
         <h3 className={classes.title}>Add Courses</h3>
         <form className={classes.inputform}>
-            <div class="mb-3">
-                <label for="1" class="form-label">Course Name</label>
+            <div className="mb-3">
+                <label htmlFor="1" className="form-label">Course Name</label>
                 <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     id="1"
                     aria-describedby="emailHelp"
                     value={courseName}
                     onChange={(e) => setCourseName(e.target.value)} />
             </div>
-            <div class="mb-3">
-                <label for="2" class="form-label">Faculty Name</label>
+            <div className="mb-3">
+                <label htmlFor="2" className="form-label">Faculty Name</label>
                 <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     id="2"
                     value={facultyName}
                     onChange={(e) => setFacultyName(e.target.value)}
                 />
             </div>
 
-            <button type="submit" class="btn btn-primary" onClick={(e) => addCourse(e)}>Submit</button>
+            <button type="submit" className="btn btn-primary" onClick={(e) => addCourse(e)}>Submit</button>
         </form>
     </div>)
 }

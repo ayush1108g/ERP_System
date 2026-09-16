@@ -54,8 +54,10 @@ const SignupPage = () => {
             return Alertctx.showAlert("danger", "Please fill all the fields");
         if (role === 'student' && !rollNumber)
             return Alertctx.showAlert("danger", "Please fill all the fields");
-        if (profile !== null && profileUrl === '') {
-            await uploadHandler();
+        let uploadedProfileUrl = profileUrl;
+        if (profile !== null && uploadedProfileUrl === '') {
+            uploadedProfileUrl = await uploadHandler();
+            if (!uploadedProfileUrl) return;
         }
         const dob = datepickerRef.current.value;
         const password = passwordInputRef.current.value;
@@ -74,7 +76,7 @@ const SignupPage = () => {
         const nbatch = Array.from(batch.split(','));
         const nsemester = Array.from(semester.split(','));
 
-        const profile_picture = profileUrl === '' ? null : profileUrl;
+        const profile_picture = uploadedProfileUrl === '' ? null : uploadedProfileUrl;
 
         const data = {
             role, email, password,
@@ -135,6 +137,7 @@ const SignupPage = () => {
             const url = `https://drive.google.com/thumbnail?id=${id}`;
             setProfileUrl(url);
             Alertctx.showAlert('success', 'File uploaded successfully');
+            return url;
         } catch (err) {
             console.log(err);
             if (err.response?.data?.message) {

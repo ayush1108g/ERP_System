@@ -23,6 +23,8 @@ const MySpecificCourse = () => {
 
     const [courseData, setCourseData] = useState(null);
     const [feedback, setFeedback] = useState(null);
+    const [schedule, setSchedule] = useState([]);
+    const [isSavingSchedule, setIsSavingSchedule] = useState(false);
     let isadmin = Loginctx.role === 'admin';
 
     useEffect(() => {
@@ -33,6 +35,7 @@ const MySpecificCourse = () => {
                 const courseInfo = response.data.data.data[0];
                 setCourseData(courseInfo);
                 setFeedback(courseInfo.feedback);
+                setSchedule(courseInfo.schedule || []);
             } catch (err) {
                 if (err?.response?.data?.message) {
                     return alertCtx.showAlert("danger", err.response.data.message);
@@ -67,6 +70,29 @@ const MySpecificCourse = () => {
         }
     }
 
+    const canEditSchedule = Loginctx.role === 'admin'
+        || (Loginctx.role === 'teacher' && (Loginctx.user?.courses_taught || []).some((course) => String(course?._id || course) === String(courseId)));
+
+    const updateScheduleRow = (index, field, value) => {
+        setSchedule((current) => current.map((row, rowIndex) => rowIndex === index ? { ...row, [field]: value } : row));
+    };
+
+    const saveSchedule = async () => {
+        if (schedule.some((row) => !row.day || !row.time)) {
+            return alertCtx.showAlert('danger', 'Complete every timetable row before saving');
+        }
+        setIsSavingSchedule(true);
+        try {
+            const response = await axios.patch(`${backendUrl}/api/v1/courses/${courseId}`, { schedule }, { headers: { Authorization: `Bearer ${Loginctx.AccessToken}` } });
+            setCourseData((current) => ({ ...current, schedule: response.data.data.data.schedule }));
+            alertCtx.showAlert('success', 'Timetable updated successfully');
+        } catch (err) {
+            alertCtx.showAlert('danger', err?.response?.data?.message || 'Unable to update timetable');
+        } finally {
+            setIsSavingSchedule(false);
+        }
+    };
+
     return (<>
         {courseData && (<div style={{ marginLeft: isSidebarOpen ? '210px' : '10px' }}>
             <h1 className={classes.title}>{courseData.name}</h1>
@@ -90,6 +116,21 @@ const MySpecificCourse = () => {
                     </div>
                 </div>
             </div>
+            {canEditSchedule && <section className={classes.scheduleEditor}>
+                <div className={classes.scheduleHeader}>
+                    <div><h2>Course timetable</h2><p>Update the class schedule for this course.</p></div>
+                    <button type="button" className="btn btn-primary" onClick={saveSchedule} disabled={isSavingSchedule}>{isSavingSchedule ? 'Saving...' : 'Save timetable'}</button>
+                </div>
+                {schedule.map((row, index) => <div className={classes.scheduleRow} key={`${row.day}-${index}`}>
+                    <select value={row.day || ''} onChange={(event) => updateScheduleRow(index, 'day', event.target.value)} aria-label={`Day ${index + 1}`}>
+                        <option value="">Select day</option>
+                        {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => <option key={day} value={day}>{day}</option>)}
+                    </select>
+                    <input type="time" value={row.time || ''} onChange={(event) => updateScheduleRow(index, 'time', event.target.value)} aria-label={`Time ${index + 1}`} />
+                    <button type="button" className="btn btn-light" onClick={() => setSchedule((current) => current.filter((_, rowIndex) => rowIndex !== index))}>Remove</button>
+                </div>)}
+                <button type="button" className="btn btn-light" onClick={() => setSchedule((current) => [...current, { day: '', time: '' }])}>Add time slot</button>
+            </section>}
             <div className={classes.b}>
                 <div onClick={() => { assignmentPage(courseData._id) }} className={classes.a}>
                     <img src={image10} alt="" className={classes.img} />

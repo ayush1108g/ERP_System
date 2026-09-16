@@ -40,12 +40,12 @@ const Add_announcement = () => {
     return (<div style={{ marginLeft: isSidebarOpen ? '210px' : '10px' }}>
         <h3 className={classes.title}>Add Announcement</h3>
         <form className={classes.inputform}>
-            <div class="mb-3">
-                <label for="2" class="form-label">Write the announcement</label>
-                <input type="text" class="form-control" id="2" aria-describedby="emailHelp" value={announcement} onChange={(e) => setAnnouncement(e.target.value)} />
+            <div className="mb-3">
+                <label htmlFor="2" className="form-label">Write the announcement</label>
+                <input type="text" className="form-control" id="2" aria-describedby="emailHelp" value={announcement} onChange={(e) => setAnnouncement(e.target.value)} />
             </div>
 
-            <button type="submit" class="btn btn-primary" onClick={(e) => addAnnouncement(e)}>Submit</button>
+            <button type="submit" className="btn btn-primary" onClick={(e) => addAnnouncement(e)}>Submit</button>
         </form>
     </div>)
 }

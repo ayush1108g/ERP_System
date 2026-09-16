@@ -1,36 +1,29 @@
 import axios from "axios";
 import { backendUrl } from "./../../constant";
 
-export const refreshAccessToken = async (func, loginCtx) => {
-  const rtoken = loginCtx.RefreshToken;
+export const refreshAccessToken = async (func, loginCtx, refreshToken) => {
+  const rtoken = refreshToken || loginCtx.RefreshToken;
+  if (!rtoken || String(rtoken).split(".").length !== 3) {
+    loginCtx.logout();
+    return false;
+  }
   loginCtx.setLoading(true);
   try {
     const resp = await axios.get(
-      `${backendUrl}/api/v1/user/verifyrefreshtoken`,
+      `${backendUrl}/api/v1/users/verifyrefreshtoken`,
       { headers: { Authorization: `Bearer ${rtoken}` } },
     );
-    console.log(resp);
-    if (
-      resp.status === 200 ||
-      resp.status === 201 ||
-      resp.status === "success" ||
-      resp.status === "Success"
-    ) {
+    if (resp.status === 200 || resp.status === 201) {
       loginCtx.setAccessToken(resp.data.AccessToken);
       loginCtx.setRefreshToken(resp.data.RefreshToken);
-      setTimeout(() => {
-        func(resp.data.AccessToken);
-      }, 1000);
-    } else {
-      alert("Please login again");
+      await func(resp.data.AccessToken);
+      return true;
     }
   } catch (err) {
-    console.log(err);
-    alert("Please login again");
+    loginCtx.logout();
+    return false;
   } finally {
-    setTimeout(() => {
-      loginCtx.setLoading(false);
-    }, 500);
+    loginCtx.setLoading(false);
   }
 };
 
@@ -39,12 +32,17 @@ export const verifyToken = async (token) => {
     const response = await axios.get(`${backendUrl}/api/v1/users/verifytoken`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(response);
     if (response.status === 200) {
       return { isLoggedin: true, name: response.data.name };
     }
   } catch (err) {
-    console.log(err);
-    return { isLoggedin: false, name: null };
+    return {
+      isLoggedin: false,
+      expired:
+        err?.response?.data?.message === "jwt expired" ||
+        err?.response?.data?.message === "TokenExpiredError",
+      name: null,
+    };
   }
+  return { isLoggedin: false, expired: false, name: null };
 };

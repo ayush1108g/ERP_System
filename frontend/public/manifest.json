@@ -1,25 +1,26 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "IIT BBS ERP",
+  "name": "IIT BBS Enterprise Resource Planning",
+  "description": "IIT BBS Enterprise Resource Planning",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "iitbbs_logo.jpeg",
+      "sizes": "256x256",
+      "type": "image/jpeg"
     },
     {
-      "src": "logo.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "iitbbs_logo.jpeg",
+      "type": "image/jpeg",
+      "sizes": "256x256"
     },
     {
-      "src": "logo.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "iitbbs_logo.jpeg",
+      "type": "image/jpeg",
+      "sizes": "256x256"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#172033",
+  "background_color": "#f5f7fb"
 }

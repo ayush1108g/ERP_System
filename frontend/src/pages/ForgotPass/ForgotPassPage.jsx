@@ -34,7 +34,7 @@ const ForgotPassPage = () => {
       if (resp.data.status === "success") {
         setErrormsg(`Password reset email sent to ${emailEntered}`);
         localStorage.setItem("Passcode", "1");
-        navigate(`fpass987-${emailEntered}`);
+        navigate(`/login/forgotpassword/fpass987-${encodeURIComponent(emailEntered)}`);
       }
     } catch (error) {
       if (error.code === "ERR_BAD_REQUEST") {

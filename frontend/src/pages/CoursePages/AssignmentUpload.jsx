@@ -93,34 +93,34 @@ const Assignment_upload = () => {
     return (<div style={{ marginLeft: isSidebarOpen ? '210px' : '10px' }}>
         <h3 className={classes.title}>Upload the Assignment </h3>
         <form className={classes.inputform}>
-            <div class="mb-3">
-                <label for="1" class="form-label">Assignment Name</label>
-                <input type="text" class="form-control" id="1" aria-describedby="emailHelp" value={assignmentName} onChange={(e) => setAssignmentName(e.target.value)} />
+            <div className="mb-3">
+                <label htmlFor="1" className="form-label">Assignment Name</label>
+                <input type="text" className="form-control" id="1" aria-describedby="emailHelp" value={assignmentName} onChange={(e) => setAssignmentName(e.target.value)} />
             </div>
-            <div class="mb-3">
-                <label for="2" class="form-label">Description</label>
-                <input type="text" class="form-control" id="2" input={assignmentDesc} onChange={(e) => setAssignmentDesc(e.target.value)} />
+            <div className="mb-3">
+                <label htmlFor="2" className="form-label">Description</label>
+                <input type="text" className="form-control" id="2" value={assignmentDesc} onChange={(e) => setAssignmentDesc(e.target.value)} />
             </div>
-            <div class={`${classes.gridContainer} ${classes.Container2}`}>
-                <label for="3" class="form-label">Question File</label>
+            <div className={`${classes.gridContainer} ${classes.Container2}`}>
+                <label htmlFor="3" className="form-label">Question File</label>
                 <div className={`${classes.gridItem} input-group mb-3`}>
-                    <input type="file" class="form-control shadow-none " id="inputGroupFile02" onChange={(e) => setProfile(e.target.files[0])} />
-                    <span class="input-group-text" for="inputGroupFile02" onClick={uploadHandler}>
+                    <input type="file" className="form-control shadow-none " id="inputGroupFile02" onChange={(e) => setProfile(e.target.files[0])} />
+                    <button type="button" className="input-group-text" onClick={uploadHandler}>
                         {fileuploading ? (<div className="spinner-border text-danger" role="status"> </div>) : 'Upload'}
-                    </span>
+                    </button>
                 </div>
             </div>
             <div className={`${classes.gridItem} input-group mb-3`}>
-                <span class="input-group-text" id="5">Due Date</span>
-                <input ref={datepickerRef} type="text" class="form-control shadow-none "
+                <span className="input-group-text" id="5">Due Date</span>
+                <input ref={datepickerRef} type="date" className="form-control shadow-none "
                     placeholder="DD-MM-YYYY"
                     aria-label="01-01-2000" aria-describedby="5" />
             </div>
-            <div class="mb-3">
-                <label for="4" class="form-label">Total Marks</label>
-                <input type="number" class="form-control" id="4" value={totalMarks} onChange={(e) => setTotalMarks(e.target.value)} />
+            <div className="mb-3">
+                <label htmlFor="4" className="form-label">Total Marks</label>
+                <input type="number" className="form-control" id="4" value={totalMarks} onChange={(e) => setTotalMarks(e.target.value)} />
             </div>
-            <button type="submit" class="btn btn-primary" onClick={(e) => addtAssignment(e)}            >Submit</button>
+            <button type="submit" className="btn btn-primary" onClick={(e) => addtAssignment(e)}>Submit</button>
         </form>
     </div>)
 }

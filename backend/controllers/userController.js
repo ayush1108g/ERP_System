@@ -21,7 +21,7 @@ exports.verifytoken = catchasync(async (req, res, next) => {
 exports.signup = catchasync(async (req, res, next) => {
   console.log(req.body);
   req.body.isApproved = false;
-  if (!req.body.role) {
+  if (!req.body.role || !["student", "teacher"].includes(req.body.role)) {
     return next(new AppError("please provide role", 400));
   }
   if (req?.body?.role === "student") {
@@ -74,7 +74,6 @@ exports.forgotPassword = catchasync(async (req, res, next) => {
     res.status(200).json({
       status: "success",
       message: "password reset link sent to your email",
-      resetToken,
     });
   } catch (err) {
     user.passwordResetToken = undefined;
@@ -169,7 +168,7 @@ exports.updateuser = async (req, res, next) => {
   }
 };
 
-exports.updatepass = catchasync(async (req, res) => {
+exports.updatepass = catchasync(async (req, res, next) => {
   const user = req.user;
   console.log(req.body.oldpassword, user.password);
   if (!(await user.correctPassword(req.body.oldpassword, user.password))) {

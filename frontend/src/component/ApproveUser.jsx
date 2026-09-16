@@ -75,7 +75,7 @@ const ApproveUser = () => {
                         </div>
                         <div className={classes.listfooter}>
                             <div className={classes.icons}>
-                                <button class="btn btn-primary" onClick={() => approveHandler(ele._id)}>Approve</button>
+                                <button className="btn btn-primary" onClick={() => approveHandler(ele._id)}>Approve</button>
                             </div>
                         </div>
                     </li>)

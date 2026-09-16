@@ -3,16 +3,26 @@ const catchasync = require("../utils/catchAsync");
 const Course = require("../models/courseModel");
 const AppError = require("../utils/appError");
 
+const teachesCourse = (user, courseId) =>
+  user.courses_taught.some((id) => id.toString() === courseId.toString());
+const enrolledInCourse = (user, courseId) =>
+  user.courses_enrolled.some(
+    (entry) => entry.course_id.toString() === courseId.toString(),
+  );
+
 exports.createAttendence = catchasync(async (req, res, next) => {
   if (req.user.role !== "teacher") {
     return next(
-      new AppError("You are not authorized to create attendence", 401)
+      new AppError("You are not authorized to create attendence", 401),
     );
   }
   const { course_id, location, validtill } = req.body;
   const course = await Course.findById(course_id);
   if (!course) {
     return next(new AppError("Course not found", 404));
+  }
+  if (!teachesCourse(req.user, course._id)) {
+    return next(new AppError("You are not assigned to this course", 403));
   }
   const attendance = await Attendance.create({
     course_id,
@@ -42,7 +52,7 @@ exports.createAttendence = catchasync(async (req, res, next) => {
 exports.deleteAttendance = catchasync(async (req, res, next) => {
   if (req.user.role !== "teacher") {
     return next(
-      new AppError("You are not authorized to create attendence", 401)
+      new AppError("You are not authorized to create attendence", 401),
     );
   }
 
@@ -53,13 +63,16 @@ exports.deleteAttendance = catchasync(async (req, res, next) => {
   }
 
   const course = await Course.findById(attendance.course_id);
+  if (!course || !teachesCourse(req.user, course._id)) {
+    return next(new AppError("You are not assigned to this course", 403));
+  }
   if (course) {
     course.attendance_records.pull(attendance._id);
     await course.save({ validateBeforeSave: false });
   }
 
   const delattendance = await Attendance.findByIdAndDelete(
-    req.params.attendance_id
+    req.params.attendance_id,
   );
 
   res.status(204).json({
@@ -70,6 +83,9 @@ exports.deleteAttendance = catchasync(async (req, res, next) => {
 
 exports.isActive = catchasync(async (req, res, next) => {
   const course_id = req.body.course_id;
+  if (req.user.role !== "student" || !enrolledInCourse(req.user, course_id)) {
+    return next(new AppError("You are not enrolled in this course", 403));
+  }
   const attendance = await Attendance.findOne({
     course_id,
     validtill: { $gt: Date.now() },
@@ -100,15 +116,28 @@ exports.markAttendance = catchasync(async (req, res, next) => {
     return next(new AppError("Attendance is expired", 400));
   }
 
+  if (
+    req.user.role !== "student" ||
+    !enrolledInCourse(req.user, attendance.course_id)
+  ) {
+    return next(new AppError("You are not enrolled in this course", 403));
+  }
+  if (
+    attendance.attendance_records.some(
+      (record) => record.student_id.toString() === req.user._id.toString(),
+    )
+  ) {
+    return next(new AppError("Attendance has already been marked", 409));
+  }
+
   const name = req.user?.personal_info?.name;
   const rollNumber = req.user?.personal_info?.rollNumber;
   const student_id = req.user._id;
-  const status = req.body.status;
   const attendanceRecord = {
     student_id,
     name,
     rollNumber,
-    status,
+    status: "present",
   };
   attendance.attendance_records.push(attendanceRecord);
   await attendance.save({
@@ -125,6 +154,16 @@ exports.markAttendance = catchasync(async (req, res, next) => {
 
 exports.getAttendancebyCourse = catchasync(async (req, res, next) => {
   const course_id = req.body.course_id;
+  const course = await Course.findById(course_id);
+  if (!course) return next(new AppError("Course not found", 404));
+  const canView =
+    req.user.role === "admin" ||
+    (req.user.role === "teacher" && teachesCourse(req.user, course_id)) ||
+    (req.user.role === "student" && enrolledInCourse(req.user, course_id));
+  if (!canView)
+    return next(
+      new AppError("You are not authorized to view this attendance", 403),
+    );
   const attendance = await Attendance.find({ course_id });
   if (!attendance) {
     return next(new AppError("Attendance not found", 404));

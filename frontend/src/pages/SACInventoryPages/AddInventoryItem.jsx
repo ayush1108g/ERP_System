@@ -49,15 +49,15 @@ const Add_inventory_item = () => {
     return (<div style={{ marginLeft: isSidebarOpen ? '210px' : '10px' }}>
         <h3 className={classes.title}>Add Equipment</h3>
         <form className={classes.inputform}>
-            <div class="mb-3">
-                <label for="1" class="form-label">Equipment Name</label>
-                <input type="text" class="form-control" id="1" aria-describedby="emailHelp" value={equipmentName} onChange={(e) => setEquipmentName(e.target.value)} />
+            <div className="mb-3">
+                <label htmlFor="1" className="form-label">Equipment Name</label>
+                <input type="text" className="form-control" id="1" aria-describedby="emailHelp" value={equipmentName} onChange={(e) => setEquipmentName(e.target.value)} />
             </div>
-            <div class="mb-3">
-                <label for="2" class="form-label">Total Quantity</label>
-                <input type="text" class="form-control" id="2" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+            <div className="mb-3">
+                <label htmlFor="2" className="form-label">Total Quantity</label>
+                <input type="text" className="form-control" id="2" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
             </div>
-            <button type="submit" class="btn btn-primary" onClick={(e) => addEquipment(e)}>Submit</button>
+            <button type="submit" className="btn btn-primary" onClick={(e) => addEquipment(e)}>Submit</button>
         </form>
 
     </div>)

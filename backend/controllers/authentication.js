@@ -15,8 +15,6 @@ const signToken = (id) => {
     expiresIn: process.env.REFRESH_JWT_EXPIRES_IN,
   });
 
-  console.log("AccessToken", Accesstoken);
-  console.log("RefreshToken", Refreshtoken);
   return [Accesstoken, Refreshtoken];
 };
 
@@ -27,7 +25,7 @@ const createSendToken = catchasync(async (user, statusCode, res) => {
   const cookieoptions = {
     expires: new Date(
       Date.now() +
-        process.env.ACCESS_JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        process.env.ACCESS_JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
     withCredentials: true,
     // httpOnly: true,
@@ -35,8 +33,8 @@ const createSendToken = catchasync(async (user, statusCode, res) => {
     // domain: "localhost",
     // path: "/winter_code_week_2/#/",
     path: "/",
-    secure: true,
-    sameSite: "None",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     httpOnly: false,
   };
   // if (process.env.NODE_ENV === "production") cookieoptions.secure = true;
@@ -72,17 +70,17 @@ const verifyRefreshToken = catchasync(async (req, res, next) => {
   }
   const decoded = await promisify(jwt.verify)(
     RefreshToken,
-    process.env.REFRESH_JWT_SECRET
+    process.env.REFRESH_JWT_SECRET,
   );
   const currentUser = await usersignup.findById(decoded.id).select("+password");
   if (!currentUser) {
     return next(
-      new AppError("the user belonging to this token does not exist", 401)
+      new AppError("the user belonging to this token does not exist", 401),
     );
   }
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(
-      new AppError("user recently changed password! please login again", 401)
+      new AppError("user recently changed password! please login again", 401),
     );
   }
   req.user = currentUser;
@@ -105,19 +103,19 @@ const protect = catchasync(async (req, res, next) => {
 
   const decoded = await promisify(jwt.verify)(
     AccessToken,
-    process.env.ACCESS_JWT_SECRET
+    process.env.ACCESS_JWT_SECRET,
   );
 
   const currentUser = await usersignup.findById(decoded.id).select("+password");
   // console.log(currentUser);
   if (!currentUser) {
     return next(
-      new AppError("the user belonging to this token does not exist", 401)
+      new AppError("the user belonging to this token does not exist", 401),
     );
   }
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(
-      new AppError("user recently changed password! please login again", 401)
+      new AppError("user recently changed password! please login again", 401),
     );
   }
   if (currentUser.isApproved === false) {

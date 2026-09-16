@@ -15,10 +15,11 @@ const ForgotPassIDPage = () => {
   const [errormsg, setErrormsg] = useState("");
 
   //check if id is valid or not else redirect to error page
-  if (!id.includes('-') || id.split("-").length !== 2 || !id.includes('@')) {
+  const decodedId = decodeURIComponent(id || "");
+  if (!decodedId.startsWith("fpass987-") || !decodedId.includes("@")) {
     return <Navigate to={`/*?error=Not%20Authorised`} />;
   }
-  const emailid = id.split("-")[1];
+  const emailid = decodedId.slice("fpass987-".length);
 
   //redirect to login page
   const loginpageHandler = () => {
@@ -44,7 +45,7 @@ const ForgotPassIDPage = () => {
       //if code is correct
       if (resp.data.status === "success") {
         localStorage.setItem("Passcode2", "1");
-        navigate(`/login/forgotpassword/fpass987-${emailid}-${body.code}/confirm`);
+        navigate(`/login/forgotpassword/fpass987-${encodeURIComponent(emailid)}-${encodeURIComponent(body.code)}/confirm`);
       }
     } catch (error) {
       if (error?.response?.data?.message) setErrormsg(error.response.data.message);

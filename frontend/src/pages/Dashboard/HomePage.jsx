@@ -52,7 +52,7 @@ function HomePage() {
       if (LoginCtx.user === null) {
         return;
       }
-      let courseEnrolled;
+      let courseEnrolled = [];
       if (LoginCtx.role === "student") {
         courseEnrolled = LoginCtx.user?.courses_enrolled;
         courseEnrolled = courseEnrolled?.map((course) => {
@@ -62,7 +62,13 @@ function HomePage() {
       else if (LoginCtx.role === "teacher") {
         courseEnrolled = LoginCtx?.user?.courses_taught;
       }
-      courseEnrolled = Array.from(new Set(courseEnrolled));
+      courseEnrolled = Array.from(new Set((courseEnrolled || []).map((course) => String(course?._id || course))));
+
+      if (courseEnrolled.length === 0) {
+        setCourses([]);
+        setTodayTimetable([]);
+        return;
+      }
 
       let data = await Promise.all(courseEnrolled.map(async (course) => {
         try {
@@ -110,7 +116,7 @@ function HomePage() {
     };
 
     asyncFunc1();
-  }, [LoginCtx.isLoggedIn]);
+  }, [LoginCtx.isLoggedIn, LoginCtx.user, LoginCtx.role, cookies.AccessToken, alertCtx, today]);
 
   // get announcements
   useEffect(() => {
@@ -129,7 +135,7 @@ function HomePage() {
       }
     };
     asyncFunc();
-  }, [LoginCtx.isLoggedIn]);
+  }, [LoginCtx.isLoggedIn, cookies.AccessToken, alertCtx]);
 
   // get attendance
   useEffect(() => {
@@ -155,7 +161,7 @@ function HomePage() {
       }
     };
     asyncFunc();
-  }, [LoginCtx.isLoggedIn]);
+  }, [LoginCtx.isLoggedIn, LoginCtx.role, cookies.AccessToken, alertCtx]);
 
   // navigate to attendance according to role
   const handleAttendance = () => {

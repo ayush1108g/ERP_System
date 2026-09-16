@@ -145,31 +145,31 @@ const View_attendance = () => {
             <h1 className={classes.title}>Attendance Report</h1>
 
             <div className={classes.gridContainer}>
-                <div class={classes.gridItem}>
+                <div className={classes.gridItem}>
                     <div>Course : </div>
                     <div className={classes.yoyo}>{courseData?.name}</div>
                 </div>
-                <div class={classes.gridItem}>
+                <div className={classes.gridItem}>
                     <div>Export Report : </div>
                     <button className="btn btn-secondary" type="button" onClick={downloadAttendance} disabled={!attendanceData.length}>
                         <MdDownload /> Download Excel
                     </button>
                 </div>
-                <div class={classes.gridItem}>
+                <div className={classes.gridItem}>
                     <div>Faculty : </div>
                     <div className={classes.yoyo}>{courseData?.professor.join(', ')}</div>
                 </div>
-                <div class={classes.gridItem}>
+                <div className={classes.gridItem}>
                     <div>Semester : </div>
                     <div className={classes.yoyo}>{courseData?.semester.join(', ')}</div>
                 </div>
 
-                <div class={classes.gridItem}>
+                <div className={classes.gridItem}>
                     <div>Students Enrolled : </div>
                     <div className={classes.yoyo}>{courseData?.students_enrolled.length}</div>
                 </div>
 
-                <div class={classes.gridItem}>
+                <div className={classes.gridItem}>
                     <div>Create Attendance : </div>
                     <button className="btn btn-primary"
                         onClick={createAttendanceHandler}

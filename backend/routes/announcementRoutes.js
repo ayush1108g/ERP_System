@@ -1,13 +1,26 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const announcementController = require('../controllers/announcementController');
+const announcementController = require("../controllers/announcementController");
+const requireRole = require("../middleware/authorization");
 
-router.get('/', announcementController.getAllAnnouncements);
+router.get("/", announcementController.getAllAnnouncements);
 
-router.post('/', announcementController.createAnnouncement);
+router.post(
+  "/",
+  requireRole("admin"),
+  announcementController.createAnnouncement,
+);
 
-router.patch('/:announcementId', announcementController.updateAnnouncement);
+router.patch(
+  "/:announcementId",
+  requireRole("admin"),
+  announcementController.updateAnnouncement,
+);
 
-router.delete('/:announcementId', announcementController.deleteAnnouncement);
+router.delete(
+  "/:announcementId",
+  requireRole("admin"),
+  announcementController.deleteAnnouncement,
+);
 
 module.exports = router;

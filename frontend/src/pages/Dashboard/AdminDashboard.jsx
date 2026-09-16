@@ -21,7 +21,6 @@ const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "
 const AdminDashBoard = () => {
     const [cookies] = useCookies(["AccessToken", "RefreshToken"]);
     const LoginCtx = useContext(LoginContext);
-    const [todayTimetable, setTodayTimetable] = useState([]);
     const sidebarCtx = useSidebar();
     const isSidebarOpen = sidebarCtx.isSidebarOpen;
     const setIsSideBarOpen = sidebarCtx.toggleSidebar;
@@ -58,14 +57,14 @@ const AdminDashBoard = () => {
             }
         }
         fetch();
-    }, [LoginCtx])
+    }, [LoginCtx.isLoginDataFetching, LoginCtx.role, cookies.AccessToken, navigate, alertCtx])
 
     useEffect(() => {
         const asyncFunc1 = async () => {
             if (LoginCtx.user === null) {
                 return;
             }
-            let courseEnrolled;
+            let courseEnrolled = [];
             if (LoginCtx.role === "student") {
                 courseEnrolled = LoginCtx.user?.courses_enrolled;
                 courseEnrolled = courseEnrolled?.map((course) => {
@@ -74,7 +73,12 @@ const AdminDashBoard = () => {
             } else if (LoginCtx.role === "teacher" || LoginCtx.role === "admin") {
                 courseEnrolled = LoginCtx?.user?.courses_taught;
             }
-            courseEnrolled = Array.from(new Set(courseEnrolled));
+            courseEnrolled = Array.from(new Set((courseEnrolled || []).map((course) => String(course?._id || course))));
+
+            if (courseEnrolled.length === 0) {
+                setCourses([]);
+                return;
+            }
 
             let data = await Promise.all(
                 courseEnrolled.map(async (course) => {
@@ -130,11 +134,10 @@ const AdminDashBoard = () => {
             // remove null values from the array
             todayTimetable = todayTimetable.filter((course) => course !== null);
             console.log(todayTimetable);
-            setTodayTimetable(Array.from(new Set(todayTimetable)));
 
         }
         asyncFunc1();
-    }, [LoginCtx]);
+    }, [LoginCtx.user, LoginCtx.role, LoginCtx.isLoggedIn, cookies.AccessToken, alertCtx, today]);
 
 
 
@@ -163,7 +166,7 @@ const AdminDashBoard = () => {
             }
         }
         asyncFunc();
-    }, []);
+    }, [cookies.AccessToken, alertCtx]);
 
     // Function to handle the sidebar
     const handleSidebar = () => {
@@ -184,11 +187,6 @@ const AdminDashBoard = () => {
     const openModal = (route) => {
         setModalData(route);
         setModalisOpen(true);
-    };
-
-    // Function to open the course page
-    const openMyCoursesPage = () => {
-        navigate('/my_courses');
     };
 
     // Function to close the modal

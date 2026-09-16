@@ -1,5 +1,6 @@
 const express = require("express");
 const courseController = require("../controllers/courseController");
+const requireRole = require("../middleware/authorization");
 
 const router = express.Router();
 
@@ -9,12 +10,12 @@ router.get("/:courseId/feedback", courseController.getCourseFeedback);
 router
   .route("/:id")
   .get(courseController.getCourse)
-  .patch(courseController.updateCourse)
-  .delete(courseController.deleteCourse);
+  .patch(requireRole("admin", "teacher"), courseController.updateCourse)
+  .delete(requireRole("admin"), courseController.deleteCourse);
 
 router
   .route("/")
-  .post(courseController.createCourse)
+  .post(requireRole("admin"), courseController.createCourse)
   .get(courseController.getAllCourses);
 
 module.exports = router;

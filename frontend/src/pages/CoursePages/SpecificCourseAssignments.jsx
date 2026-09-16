@@ -23,7 +23,8 @@ const SpecificCourseAssignments = () => {
   const isSidebarOpen = useSidebar().isSidebarOpen;
 
   const [assignmentData, setAssignmentData] = useState([]);
-  let isadmin = Loginctx.role === 'admin';
+  const canManageAssignments = Loginctx.role === 'admin'
+    || (Loginctx.role === 'teacher' && (Loginctx.user?.courses_taught || []).some((course) => String(course?._id || course) === String(courseId)));
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -85,7 +86,7 @@ const SpecificCourseAssignments = () => {
 
   return (<div className={classes.Body} style={{ marginLeft: isSidebarOpen ? '210px' : '10px' }}>
     <h2 className={classes.title}><div>Your Assignments</div></h2>
-    {isadmin &&
+    {canManageAssignments &&
       <h5 style={{ margin: '30px', display: 'flex' }} onClick={() => openAddAssignmentPage()}>
         <div> <FaPlus color="blue" /></div>
         <div> Add Assignments/Comments </div>

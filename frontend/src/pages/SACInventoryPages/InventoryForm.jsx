@@ -76,7 +76,7 @@ const Inventory_form = () => {
               <div className={classes.yoyo}>{equipmentData.available_quantity}</div>
               {
                 isadmin &&
-                <button type="button" class="btn btn-success" onClick={() => openUpdateItemPage()}>Update</button>
+                <button type="button" className="btn btn-success" onClick={() => openUpdateItemPage()}>Update</button>
               }
             </div>
             <div className={classes.gridItem}>

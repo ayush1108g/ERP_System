@@ -22,7 +22,10 @@ const LoginContext = React.createContext({
 });
 
 const LoginContextProvider = (props) => {
-  const [cookie, setCookie] = useCookies(["AccessToken", "RefreshToken"]);
+  const [, setCookie, removeCookie] = useCookies([
+    "AccessToken",
+    "RefreshToken",
+  ]);
 
   const [isLoginDataFetching, setIsLoginDataFetching] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -57,8 +60,8 @@ const LoginContextProvider = (props) => {
     setRefreshToken(null);
     setIsLoggedIn(false);
     setName(null);
-    setCookie("AccessToken", null, { path: "/", maxAge: 0 });
-    setCookie("RefreshToken", null, { path: "/", maxAge: 0 });
+    removeCookie("AccessToken", { path: "/" });
+    removeCookie("RefreshToken", { path: "/" });
     setRole(null);
     setUser(null);
   };

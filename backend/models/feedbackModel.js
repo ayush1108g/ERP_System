@@ -24,6 +24,8 @@ const feedbackSchema = new Schema({
   },
 });
 
+feedbackSchema.index({ student_id: 1, course_id: 1 }, { unique: true });
+
 const Feedback = mongoose.model("Feedback", feedbackSchema);
 
 module.exports = Feedback;

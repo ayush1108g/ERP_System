@@ -1,6 +1,6 @@
 // addInventoryIssueController.js
-const Equipment = require('../models/inventoryModel');
-const User = require('../models/userModel'); 
+const Equipment = require("../models/inventoryModel");
+const User = require("../models/userModel");
 
 exports.getAllInventory = async (req, res, next) => {
   try {
@@ -18,40 +18,44 @@ exports.addInventoryIssue = async (req, res, next) => {
     const studentId = req.user._id;
     const { equipmentId, issued_date } = req.body;
 
-    // Find the equipment by its ID
-    const equipment = await Equipment.findById(equipmentId);
+    const equipment = await Equipment.findOneAndUpdate(
+      { _id: equipmentId, available_quantity: { $gt: 0 } },
+      {
+        $inc: { available_quantity: -1 },
+        $push: { issued_to: { student_id: studentId, issued_date } },
+        $set: { last_updated: new Date() },
+      },
+      { new: true },
+    );
 
     if (!equipment) {
-      return res.status(404).json({ message: 'Equipment not found' });
+      const exists = await Equipment.exists({ _id: equipmentId });
+      return res
+        .status(exists ? 400 : 404)
+        .json({
+          message: exists
+            ? "No available quantity to issue"
+            : "Equipment not found",
+        });
     }
-
-    // Check if available quantity is greater than 0
-    if (equipment.available_quantity === 0) {
-      return res.status(400).json({ message: 'No available quantity to issue' });
-    }
-
-    // Update the equipment document to reflect the issue
-    equipment.available_quantity -= 1;
-    equipment.issued_to.push({ student_id: studentId, issued_date });
-    await equipment.save();
 
     // Load the user based on studentId
     const user = await User.findById(studentId);
 
     if (!user) {
-      return res.status(400).json({ message: 'User not found' });
+      return res.status(400).json({ message: "User not found" });
     }
 
     // Update the user document to reflect the issued equipment
-    user.equipment_issued.push(equipmentId);
-    await user.save({ validateBeforeSave: false });
+    await User.findByIdAndUpdate(studentId, {
+      $addToSet: { equipment_issued: equipmentId },
+    });
 
-    res.status(200).json({ message: 'Inventory item issued successfully' });
+    res.status(200).json({ message: "Inventory item issued successfully" });
   } catch (error) {
     next(error);
   }
 };
-
 
 exports.deleteInventoryIssue = async (req, res, next) => {
   try {
@@ -61,22 +65,32 @@ exports.deleteInventoryIssue = async (req, res, next) => {
     const equipment = await Equipment.findById(equipmentId);
 
     if (!equipment) {
-      return res.status(404).json({ message: 'Equipment not found' });
+      return res.status(404).json({ message: "Equipment not found" });
     }
 
     // Find the issued item to delete
-    const issueIndex = equipment.issued_to.findIndex(issue => issue._id.toString() === issueId);
+    const issueIndex = equipment.issued_to.findIndex(
+      (issue) => issue._id.toString() === issueId,
+    );
 
     if (issueIndex === -1) {
-      return res.status(404).json({ message: 'Issue not found' });
+      return res.status(404).json({ message: "Issue not found" });
     }
 
+    const issuedItem = equipment.issued_to[issueIndex];
     // Remove the issued item and update available quantity
     equipment.available_quantity += 1;
     equipment.issued_to.splice(issueIndex, 1);
     await equipment.save();
 
-    res.status(200).json({ message: 'Inventory item issue deleted successfully' });
+    await User.findOneAndUpdate(
+      { _id: issuedItem.student_id },
+      { $pull: { equipment_issued: equipmentId } },
+    );
+
+    res
+      .status(200)
+      .json({ message: "Inventory item issue deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -96,12 +110,13 @@ exports.addInventoryItem = async (req, res, next) => {
     // Save the equipment item to the database
     await equipment.save();
 
-    res.status(201).json({ message: 'Inventory item added successfully', equipment });
+    res
+      .status(201)
+      .json({ message: "Inventory item added successfully", equipment });
   } catch (error) {
     next(error);
   }
 };
-
 
 exports.updateInventoryItem = async (req, res, next) => {
   try {
@@ -111,7 +126,7 @@ exports.updateInventoryItem = async (req, res, next) => {
     const equipment = await Equipment.findById(equipmentId);
 
     if (!equipment) {
-      return res.status(404).json({ message: 'Equipment not found' });
+      return res.status(404).json({ message: "Equipment not found" });
     }
 
     // Update the total and available quantities
@@ -125,7 +140,12 @@ exports.updateInventoryItem = async (req, res, next) => {
     // Save the updated equipment item to the database
     await equipment.save();
 
-    res.status(200).json({ message: 'Inventory item quantities updated successfully', equipment });
+    res
+      .status(200)
+      .json({
+        message: "Inventory item quantities updated successfully",
+        equipment,
+      });
   } catch (error) {
     next(error);
   }
@@ -136,10 +156,9 @@ exports.getEquipmentById = async (req, res, next) => {
     const equipmentId = req.params.equipmentId;
     const equipment = await Equipment.findById(equipmentId);
     if (!equipment) {
-      return res.status(404).json({ message: 'Equipment not found' });
+      return res.status(404).json({ message: "Equipment not found" });
     }
 
-    
     res.status(200).json({ equipment });
   } catch (error) {
     next(error);

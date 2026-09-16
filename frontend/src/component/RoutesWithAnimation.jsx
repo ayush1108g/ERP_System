@@ -49,29 +49,33 @@ const RoutesWithAnimation = () => {
     // Verify the token and set the user data in the context
     useEffect(() => {
         const asyncFunc = async (AccessToken) => {
-            if (!AccessToken) {
+            const accessToken = typeof AccessToken === "string" && AccessToken.split(".").length === 3
+                ? AccessToken
+                : null;
+            const refreshToken = typeof cookie.RefreshToken === "string" && cookie.RefreshToken.split(".").length === 3
+                ? cookie.RefreshToken
+                : null;
+            if (!accessToken) {
+                if (AccessToken || cookie.RefreshToken) authCtx.logout();
                 authCtx.setIsLoggedIn(false);
                 authCtx.setLoading(false);
                 authCtx.setIsLoginDataFetching(false);
                 return;
             }
             try {
-                const response = await verifyToken(AccessToken);
+                const response = await verifyToken(accessToken);
                 if (response?.isLoggedin === true) {
-                    authCtx.setAccessToken(AccessToken);
-                    authCtx.setRefreshToken(cookie?.RefreshToken);
+                    authCtx.setAccessToken(accessToken);
+                    authCtx.setRefreshToken(refreshToken);
                     authCtx.setIsLoggedIn(true);
                     authCtx.setName(response?.name);
+                } else if (response?.expired && refreshToken) {
+                    await refreshAccessToken(asyncFunc, authCtx, refreshToken);
+                } else {
+                    authCtx.logout();
                 }
             } catch (err) {
-                if (
-                    err.message === "jwt expired" ||
-                    err?.response?.data?.message === "jwt expired"
-                ) {
-                    console.log("jwt expired");
-                    return refreshAccessToken(asyncFunc, authCtx);
-                }
-                authCtx.setIsLoggedIn(false);
+                authCtx.logout();
             } finally {
                 authCtx.setLoading(false);
                 authCtx.setIsLoginDataFetching(false);

@@ -255,21 +255,21 @@ const SpecificAssignment = () => {
               <div>Your Work</div>
               <div>Assigned</div>
             </div>
-            <div class={`${classes.gridContainer} ${classes.Container2}`}>
+            <div className={`${classes.gridContainer} ${classes.Container2}`}>
 
               <div className={`${classes.gridItem} input-group mb-3`}>
-                <input type="file" class="form-control shadow-none " id="inputGroupFile02"
+                <input type="file" className="form-control shadow-none " id="inputGroupFile02"
                   // value={profile}
                   onChange={(e) => setProfile(e.target.files[0])}
                 />
-                <span class="input-group-text" for="inputGroupFile02" onClick={uploadHandler}>
+                <button type="button" className="input-group-text" onClick={uploadHandler}>
 
                   {!fileuploading && 'Upload'}
                   {fileuploading && (
                     <div className="spinner-border text-danger" role="status">
                     </div>
                   )}
-                </span>
+                </button>
               </div>
             </div>
             <div className={`${classes.smbx} ${classes.smbx3}`} onClick={submitAssignment}>

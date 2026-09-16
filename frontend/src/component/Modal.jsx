@@ -12,7 +12,7 @@ const ModalA = (props) => {
     const alertCtx = useAlert();
     const loginCtx = useContext(LoginContext);
     const userData = loginCtx.user;
-    const courses = props.courses;
+    const courses = props.courses || [];
     const [selectedCourse, setSelectedCourse] = useState(null);
     const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const ModalA = (props) => {
 
     const submitHandler = () => {
         console.log(selectedCourse);
-        if (selectedCourse === "Select Course" || selectedCourse === null) {
+        if (!selectedCourse) {
             alertCtx.showAlert("danger", "Select any course");
             return;
         }
@@ -60,7 +60,7 @@ const ModalA = (props) => {
                             value={selectedCourse}
                             onChange={(e) => { setSelectedCourse(e.target.value) }}
                         >
-                            <option value={null}>Select Course </option>
+                            <option value="">{courses.length ? "Select Course" : "No courses available"}</option>
                             {courses.map((course) => {
                                 if (!course) return null;
                                 return (

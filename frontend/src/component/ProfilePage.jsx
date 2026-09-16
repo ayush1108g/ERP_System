@@ -19,7 +19,7 @@ const Profile_page = () => {
         </div>
         <div className={classes.grandParent}>
             <div className={classes.parent1}>
-                <img class={classes.circularBox} src={user?.personal_info?.profile_picture || demoProfilePhoto} alt="profile" onError={(event) => { event.currentTarget.src = demoProfilePhoto; }} />
+                <img className={classes.circularBox} src={user?.personal_info?.profile_picture || demoProfilePhoto} alt="profile" onError={(event) => { event.currentTarget.src = demoProfilePhoto; }} />
                 <div className={classes.details}>
                     <div>
                         {user?.personal_info.name}

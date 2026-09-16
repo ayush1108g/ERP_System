@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/gc_erp_system/static/css/main.f6e66739.css",
-    "main.js": "/gc_erp_system/static/js/main.1e52a2d4.js",
-    "static/js/453.8ab44547.chunk.js": "/gc_erp_system/static/js/453.8ab44547.chunk.js",
-    "static/media/9.jpg": "/gc_erp_system/static/media/9.415bf8a2e5a426bb72c2.jpg",
-    "static/media/10.jpg": "/gc_erp_system/static/media/10.26b4a730f945b399c47b.jpg",
-    "static/media/7.jpg": "/gc_erp_system/static/media/7.7d17c0db661d2143c9fa.jpg",
-    "static/media/2.jpg": "/gc_erp_system/static/media/2.b2c7bde4595ac2fef588.jpg",
-    "static/media/0.jpg": "/gc_erp_system/static/media/0.29882facf432a8988299.jpg",
-    "static/media/11.jpg": "/gc_erp_system/static/media/11.1aff627321ec7b1b8189.jpg",
-    "static/media/4.jpg": "/gc_erp_system/static/media/4.49d094ce1819fcd2dcef.jpg",
-    "static/media/1.jpg": "/gc_erp_system/static/media/1.73054035a166afbcee59.jpg",
-    "static/media/8.jpg": "/gc_erp_system/static/media/8.d0d5ec2e57eec1fc3840.jpg",
-    "static/media/5.jpg": "/gc_erp_system/static/media/5.d1bd62e5c22f3e026bb8.jpg",
-    "static/media/12.jpg": "/gc_erp_system/static/media/12.6cb00aa47d409358ee13.jpg",
-    "static/media/3.jpg": "/gc_erp_system/static/media/3.43a8428d3b3d86a29fb6.jpg",
-    "static/media/6.jpg": "/gc_erp_system/static/media/6.2b7112d41ae6f923ffbd.jpg",
-    "index.html": "/gc_erp_system/index.html",
-    "main.f6e66739.css.map": "/gc_erp_system/static/css/main.f6e66739.css.map",
-    "main.1e52a2d4.js.map": "/gc_erp_system/static/js/main.1e52a2d4.js.map",
-    "453.8ab44547.chunk.js.map": "/gc_erp_system/static/js/453.8ab44547.chunk.js.map"
+    "main.css": "/ERP_System/static/css/main.f6e66739.css",
+    "main.js": "/ERP_System/static/js/main.5c70daa8.js",
+    "static/js/453.8ab44547.chunk.js": "/ERP_System/static/js/453.8ab44547.chunk.js",
+    "static/media/9.jpg": "/ERP_System/static/media/9.415bf8a2e5a426bb72c2.jpg",
+    "static/media/10.jpg": "/ERP_System/static/media/10.26b4a730f945b399c47b.jpg",
+    "static/media/7.jpg": "/ERP_System/static/media/7.7d17c0db661d2143c9fa.jpg",
+    "static/media/2.jpg": "/ERP_System/static/media/2.b2c7bde4595ac2fef588.jpg",
+    "static/media/0.jpg": "/ERP_System/static/media/0.29882facf432a8988299.jpg",
+    "static/media/11.jpg": "/ERP_System/static/media/11.1aff627321ec7b1b8189.jpg",
+    "static/media/4.jpg": "/ERP_System/static/media/4.49d094ce1819fcd2dcef.jpg",
+    "static/media/1.jpg": "/ERP_System/static/media/1.73054035a166afbcee59.jpg",
+    "static/media/8.jpg": "/ERP_System/static/media/8.d0d5ec2e57eec1fc3840.jpg",
+    "static/media/5.jpg": "/ERP_System/static/media/5.d1bd62e5c22f3e026bb8.jpg",
+    "static/media/12.jpg": "/ERP_System/static/media/12.6cb00aa47d409358ee13.jpg",
+    "static/media/3.jpg": "/ERP_System/static/media/3.43a8428d3b3d86a29fb6.jpg",
+    "static/media/6.jpg": "/ERP_System/static/media/6.2b7112d41ae6f923ffbd.jpg",
+    "index.html": "/ERP_System/index.html",
+    "main.f6e66739.css.map": "/ERP_System/static/css/main.f6e66739.css.map",
+    "main.5c70daa8.js.map": "/ERP_System/static/js/main.5c70daa8.js.map",
+    "453.8ab44547.chunk.js.map": "/ERP_System/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f6e66739.css",
-    "static/js/main.1e52a2d4.js"
+    "static/js/main.5c70daa8.js"
   ]
 }
